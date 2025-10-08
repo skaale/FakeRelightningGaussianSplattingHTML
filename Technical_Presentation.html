@@ -245,20 +245,6 @@
             <p class="mb-4 text-justify">
                 This differs from fixed-normal approaches in that the effective normal updates per-frame with the view direction, maintaining lighting consistency as the camera moves. While this prevents proper specular highlights (which require stable surface orientation), it provides plausible diffuse shading at minimal cost.
             </p>
-
-            <div class="mt-6 p-4" style="background: #fafafa; border-left: 2px solid #333;">
-                <p class="text-sm mb-2"><strong>Reference:</strong></p>
-                <p class="text-sm text-gray-700">
-                    Unity Technologies (2023). "Realistic smoke with 6-way lighting in VFX Graph." Unity Blog. 
-                    <a href="https://unity.com/blog/engine-platform/realistic-smoke-with-6-way-lighting-in-vfx-graph" 
-                       class="text-blue-600 hover:underline" target="_blank">
-                        Link to article
-                    </a>
-                </p>
-                <p class="text-sm text-gray-600 mt-2">
-                    While VFX Graph uses pre-baked directional lighting for particles, my method enables real-time response to dynamic lights by leveraging the view-as-normal approximation.
-                </p>
-            </div>
         </div>
     </section>
 
