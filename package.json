@@ -2,7 +2,7 @@
   "name": "fakerelightning",
   "version": "1.0.0",
   "scripts": {
-    "start": "npx serve -s . -l 3000"
+    "start": "npx serve . -l 3000"
   },
   "dependencies": {
     "serve": "^14.2.1"
