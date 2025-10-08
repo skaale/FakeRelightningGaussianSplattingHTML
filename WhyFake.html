@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why "Fake" Relighting? - Gaussian Splatting Explained</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+        }
+        .content-width {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .equation-block {
+            background: #fafafa;
+            border-left: 2px solid #333;
+            padding: 1rem;
+            margin: 0.75rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        .nav-link:hover {
+            border-bottom-color: #333;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem !important;
+            }
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            h3 {
+                font-size: 1.25rem !important;
+            }
+            .equation-block {
+                padding: 0.75rem;
+                margin: 0.5rem 0;
+                font-size: 0.875rem;
+            }
+            section {
+                padding-top: 1.5rem !important;
+                padding-bottom: 1.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+        <div class="content-width px-4 md:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-light tracking-wide">
+                    <a href="Technical_Presentation.html" class="nav-link">← BACK TO MAIN PRESENTATION</a>
+                </div>
+                <div class="text-sm font-light tracking-wide">WHY "FAKE" RELIGHTING?</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <section class="pt-28 pb-8">
+        <div class="content-width px-4 md:px-6">
+            <h1 class="text-3xl md:text-5xl mb-4">Why "Fake" Relighting?</h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-4">A Simple Explanation of Real-Time Dynamic Lighting for Gaussian Splatting</p>
+        </div>
+    </section>
+
+    <!-- The Problem -->
+    <section class="py-6">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-4">The Problem</h2>
+            <p class="mb-3 text-justify">
+                Gaussian Splatting represents 3D scenes as millions of colored "splats" (like oriented paint blobs). Each splat has:
+            </p>
+            <ul class="list-none space-y-1 ml-6 mb-3">
+                <li>• Position in 3D space</li>
+                <li>• Color (stored as spherical harmonics - SH)</li>
+                <li>• Shape/orientation</li>
+                <li>• <strong>NO surface normals</strong> (no information about which way surfaces face)</li>
+            </ul>
+            <p class="mb-3 text-justify">
+                The colors are "baked in" from the original camera capture—they can't respond to new lights you add to the scene.
+            </p>
+        </div>
+    </section>
+
+    <!-- Why It's Hard -->
+    <section class="py-6 bg-gray-50">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-4">Why It's Hard</h2>
+            <p class="mb-3 text-justify">
+                Traditional 3D lighting needs <strong>surface normals</strong> (arrows pointing perpendicular to surfaces) to calculate how light hits objects. For example:
+            </p>
+            <ul class="list-none space-y-1 ml-6 mb-3">
+                <li>• A surface facing a light = bright</li>
+                <li>• A surface facing away = dark</li>
+            </ul>
+            <p class="mb-3 text-justify">
+                But Gaussian Splats are <strong>billboards</strong>—flat quads that always rotate to face the camera. They don't have real surface geometry or normals.
+            </p>
+        </div>
+    </section>
+
+    <!-- The "Fake" Relighting Trick -->
+    <section class="py-6">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-4">The "Fake" Relighting Trick</h2>
+            <p class="mb-3 text-justify">
+                Instead of computing real surface normals (which don't exist), I use a clever approximation:
+            </p>
+            <div class="equation-block">
+                <p class="text-center text-lg mb-2">
+                    <strong>View Direction = Surface Normal</strong>
+                </p>
+                <p class="text-center text-sm mt-2">
+                    Effective Normal = normalize(CameraPosition - SplatPosition)
+                </p>
+            </div>
+            <p class="mb-3 text-justify">
+                <strong>The key insight:</strong> Since splats always face the camera AND represent surfaces that were visible during capture, the direction from the splat to the camera is a reasonable guess for the surface orientation.
+            </p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-6 bg-gray-50">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-4">How It Works (3 Steps)</h2>
+            <div class="ml-6 mb-4">
+                <p class="mb-3"><strong>1. Compute fake normal:</strong> Use view direction as if it were a surface normal</p>
+                
+                <p class="mb-2"><strong>2. Calculate lighting:</strong> Use standard lighting math (Lambert shading)</p>
+                <div class="equation-block ml-6">
+                    <p class="text-center">Brightness = max(0, normal · lightDirection)</p>
+                </div>
+                
+                <p class="mb-2 mt-4"><strong>3. Apply attenuation:</strong> Lights fade with distance using squared falloff</p>
+                <div class="equation-block ml-6">
+                    <p class="text-center">Attenuation = 1 - (distance/range)²</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why "Fake"? -->
+    <section class="py-6">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-4">Why "Fake"?</h2>
+            <ul class="list-none space-y-1 ml-6 mb-3">
+                <li>• <strong>Not physically accurate:</strong> Real surfaces have fixed normals that don't change with view angle</li>
+                <li>• <strong>But visually plausible:</strong> Looks good enough for real-time applications</li>
+                <li>• <strong>Zero overhead:</strong> View direction is already computed for billboard orientation</li>
+                <li>• <strong>Real-time performance:</strong> 60+ FPS with multiple dynamic lights</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- The Trade-off -->
+    <section class="py-6 bg-gray-50">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-4">The Trade-off</h2>
+            <div class="grid md:grid-cols-2 gap-6 mb-4">
+                <div>
+                    <p class="font-semibold mb-2 text-base md:text-lg">What you get:</p>
+                    <ul class="list-none space-y-1">
+                        <li>✓ Dynamic lights that move in real-time</li>
+                        <li>✓ Point lights, spot lights, directional lights</li>
+                        <li>✓ Shadows and ambient occlusion integration</li>
+                        <li>✓ Fast enough for VR (&lt;1ms per 10 lights)</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="font-semibold mb-2 text-base md:text-lg">What you don't get:</p>
+                    <ul class="list-none space-y-1">
+                        <li>✗ No specular highlights (shiny reflections)</li>
+                        <li>✗ No accurate surface microdetail</li>
+                        <li>✗ Not suitable for materials that require precise normals</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary -->
+    <section class="py-6">
+        <div class="content-width px-4 md:px-6">
+            <div class="p-4 mb-4" style="background: #fafafa; border-left: 3px solid #333;">
+                <p class="font-semibold mb-2 text-base md:text-lg">In One Sentence</p>
+                <p class="text-justify text-base md:text-lg">
+                    "I fake lighting on Gaussian Splats by pretending the view direction is the surface normal, which gives plausible real-time dynamic lighting without needing actual geometry."
+                </p>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a href="Technical_Presentation.html" class="inline-block px-6 py-3 border border-gray-300 hover:border-gray-900 transition-colors">
+                    Return to Full Technical Presentation →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-sm text-gray-500 border-t border-gray-200">
+        <div class="content-width px-4 md:px-6">
+            <p class="mb-2">Real-Time Fake Relighting for 3D Gaussian Splatting</p>
+            <p>Simplified Explanation · October 2025</p>
+        </div>
+    </footer>
+</body>
+</html>
+
