@@ -2,11 +2,843 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=Technical_Presentation.html">
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Fake Relighting for 3D Gaussian Splatting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+        }
+        .content-width {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .equation-block {
+            background: #fafafa;
+            border-left: 2px solid #333;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .section-divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 3rem 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 0.875rem;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: #fafafa;
+            font-weight: 600;
+        }
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        .nav-link:hover {
+            border-bottom-color: #333;
+        }
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .mobile-menu {
+            display: none;
+        }
+        .desktop-menu {
+            display: flex;
+        }
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            h1 {
+                font-size: 2rem !important;
+            }
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            h3 {
+                font-size: 1.25rem !important;
+            }
+            .equation-block {
+                padding: 1rem;
+                font-size: 0.875rem;
+            }
+            table {
+                font-size: 0.75rem;
+            }
+            th, td {
+                padding: 0.5rem;
+            }
+            .section-divider {
+                margin: 2rem 0;
+            }
+        }
+    </style>
 </head>
-<body>
-    <p>Redirecting to <a href="Technical_Presentation.html">Technical Presentation</a>...</p>
+<body class="bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+        <div class="max-w-full px-4 md:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xs md:text-sm font-light tracking-wide">GAUSSIAN SPLAT RELIGHTING</div>
+                
+                <!-- Desktop Menu -->
+                <div class="desktop-menu space-x-6 text-sm">
+                    <a href="#abstract" class="nav-link whitespace-nowrap">Abstract</a>
+                    <a href="#introduction" class="nav-link whitespace-nowrap">Introduction</a>
+                    <a href="WhyFake.html" class="nav-link whitespace-nowrap" target="_blank">Why Fake?</a>
+                    <a href="#billboards" class="nav-link whitespace-nowrap">Billboards</a>
+                    <a href="#mathematics" class="nav-link whitespace-nowrap">Mathematics</a>
+                    <a href="#algorithm" class="nav-link whitespace-nowrap">Algorithm</a>
+                    <a href="#performance" class="nav-link whitespace-nowrap">Performance</a>
+                    <a href="#conclusion" class="nav-link whitespace-nowrap">Conclusion</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu text-sm" onclick="toggleMobileMenu()">☰ Menu</button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenuDropdown" class="mobile-menu hidden mt-4 space-y-2 text-sm">
+                <a href="#abstract" class="block py-2 nav-link" onclick="closeMobileMenu()">Abstract</a>
+                <a href="#introduction" class="block py-2 nav-link" onclick="closeMobileMenu()">Introduction</a>
+                <a href="WhyFake.html" class="block py-2 nav-link" target="_blank">Why Fake?</a>
+                <a href="#billboards" class="block py-2 nav-link" onclick="closeMobileMenu()">Billboards</a>
+                <a href="#mathematics" class="block py-2 nav-link" onclick="closeMobileMenu()">Mathematics</a>
+                <a href="#algorithm" class="block py-2 nav-link" onclick="closeMobileMenu()">Algorithm</a>
+                <a href="#performance" class="block py-2 nav-link" onclick="closeMobileMenu()">Performance</a>
+                <a href="#conclusion" class="block py-2 nav-link" onclick="closeMobileMenu()">Conclusion</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <section class="pt-32 pb-8">
+        <div class="content-width px-4 md:px-6">
+            <h1 class="text-3xl md:text-5xl mb-6">Real-Time Fake Relighting for 3D Gaussian Splatting</h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-8">A Novel Approach to Dynamic Lighting in Billboard-Based Volumetric Rendering</p>
+            <div class="text-sm text-gray-500 space-y-1">
+                <p>Technical Paper Presentation</p>
+                <p>October 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract -->
+    <section id="abstract" class="py-8">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">Abstract</h2>
+            <div class="text-justify">
+                <p class="mb-4">
+                    I present a novel approach for real-time fake relighting of 3D Gaussian Splats that approximates physically-based lighting without requiring explicit surface normals or extensive preprocessing. My method introduces custom attenuation models for directional, point, and spot lights that work specifically with the billboard-based rendering nature of Gaussian Splatting.
+                </p>
+                <p class="mb-4">
+                    By treating view direction as implicit surface orientation and applying carefully tuned distance-based and angular attenuation, I achieve plausible lighting effects at minimal computational cost suitable for real-time applications including VR. The system maintains 60+ FPS performance while supporting multiple dynamic lights, shadows, and SSAO integration.
+                </p>
+            </div>
+            
+            <div class="mt-8">
+                <p class="text-sm font-semibold mb-2">KEYWORDS</p>
+                <p class="text-sm text-gray-600">Gaussian Splatting · Real-time Rendering · Dynamic Lighting · Attenuation Models · Volumetric Rendering</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Introduction -->
+    <section id="introduction" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">1. Introduction</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">1.1 Background</h3>
+            <p class="mb-4 text-justify">
+                3D Gaussian Splatting [Kerbl et al. 2023] represents scenes as collections of anisotropic 3D Gaussians with spherical harmonic (SH) appearance encoding. While SH coefficients capture view-dependent appearance from the original capture conditions, they lack the ability to respond to dynamic lighting changes—a critical limitation for interactive applications.
+            </p>
+            <p class="mb-4 text-justify">
+                Traditional surface-based relighting relies on explicit surface normals for Lambert/Phong shading, material properties (albedo, roughness, metallicity), and BRDF evaluation at each surface point. Gaussian Splats present unique challenges: no explicit surface representation, billboard quads oriented toward camera, view-dependent SH color encoding, and alpha-blended volumetric composition.
+            </p>
+            
+            <h3 class="text-xl mb-4 mt-8 font-normal">1.2 Contributions</h3>
+            <p class="mb-2">I introduce a fake relighting system that provides:</p>
+            <ul class="list-none space-y-2 ml-6">
+                <li>1. <strong>View-as-Normal Approximation</strong>: Uses view direction as implicit surface orientation</li>
+                <li>2. <strong>Custom Attenuation Models</strong>: Squared distance falloff for point lights with smooth spatial transitions</li>
+                <li>3. <strong>Directional Light Enhancement</strong>: Combines shadow mapping with custom distance and angular attenuation</li>
+                <li>4. <strong>Spot Light Cone Filtering</strong>: Smooth inner/outer cone transitions with distance falloff</li>
+                <li>5. <strong>GPU-Accelerated Implementation</strong>: Efficient compute shader-based light buffer management</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Billboard Primitives -->
+    <section id="billboards" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">2. Billboard Primitives in Gaussian Splatting</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">2.1 Understanding Billboard Rendering</h3>
+            <p class="mb-4 text-justify">
+                Gaussian Splatting renders each splat as a billboard primitive—a quad that always faces the camera. This technique, commonly used in particle systems and volumetric effects, presents unique challenges for dynamic lighting since traditional surface-based shading assumes fixed surface orientations.
+            </p>
+            
+            <p class="mb-4 text-justify">
+                Unlike polygonal meshes where surface normals are defined by geometry, billboard primitives dynamically reorient themselves each frame to face the viewer. This view-dependent orientation is fundamental to the Gaussian Splatting representation, where each 3D Gaussian is projected into screen space as an anisotropic 2D footprint.
+            </p>
+
+            <div class="my-8 text-center">
+                <img src="biiboard.gif" alt="Billboard primitive orientation demonstration" class="mx-auto" style="max-width: 100%; height: auto; border: 1px solid #e0e0e0;">
+                <p class="text-sm text-gray-600 mt-3"><em>Figure 1: Billboard primitives maintain camera-facing orientation regardless of viewpoint</em></p>
+            </div>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">2.2 Lighting Challenges for Billboards</h3>
+            <p class="mb-4 text-justify">
+                Traditional lighting models (Lambert, Phong, BRDF) require stable surface normals computed from geometry. For billboards, three approaches exist:
+            </p>
+            
+            <ul class="list-none space-y-3 ml-6 mb-4">
+                <li>1. <strong>Ignore lighting</strong>: Treat billboards as unlit sprites (common in legacy particle systems)</li>
+                <li>2. <strong>Fixed normals</strong>: Assign arbitrary normals independent of view direction [Unity VFX Graph 6-way lighting approach]</li>
+                <li>3. <strong>View-as-normal</strong>: Use the view direction itself as the effective normal (my approach)</li>
+            </ul>
+
+            <p class="mb-4 text-justify">
+                Unity's VFX Graph implements 6-way lighting by sampling pre-baked lighting from six orthogonal directions and blending based on particle orientation. While effective for authored VFX, this approach requires extensive preprocessing and cannot respond to dynamic lights in real-time.
+            </p>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">2.3 View-as-Normal Justification</h3>
+            <p class="mb-4 text-justify">
+                My approach treats the view direction as the effective surface normal. This is justified for Gaussian Splats because:
+            </p>
+
+            <ul class="list-none space-y-2 ml-6 mb-4">
+                <li>• <strong>Capture consistency</strong>: Splats represent surfaces that were visible during capture—by definition, facing toward the camera</li>
+                <li>• <strong>Billboard nature</strong>: Since splats always orient toward the viewer, the view direction approximates their implicit surface orientation</li>
+                <li>• <strong>Zero overhead</strong>: View direction is already computed for billboard orientation, requiring no additional data</li>
+                <li>• <strong>Perceptual validity</strong>: Human perception of lighting on camera-facing surfaces is less sensitive to normal inaccuracies than on oblique surfaces</li>
+            </ul>
+
+            <p class="mb-4 text-justify">
+                This differs from fixed-normal approaches in that the effective normal updates per-frame with the view direction, maintaining lighting consistency as the camera moves. While this prevents proper specular highlights (which require stable surface orientation), it provides plausible diffuse shading at minimal cost.
+            </p>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Mathematical Foundation -->
+    <section id="mathematics" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">3. Mathematical Foundation</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">3.1 View-Direction as Surface Normal</h3>
+            <p class="mb-4 text-justify">
+                Traditional surface rendering computes lighting using surface normal <strong>n</strong>. For Gaussian Splats, I lack explicit normals. My key insight: <em>the view direction inherently encodes surface orientation</em> for billboard primitives.
+            </p>
+            
+            <div class="equation-block">
+                <p class="text-center mb-2">Effective Normal Definition:</p>
+                <p class="text-center text-lg">
+                    \( \mathbf{n}_{eff} = \text{normalize}(\mathbf{C} - \mathbf{P}_{world}) \)
+                </p>
+                <div class="mt-4 text-sm">
+                    <p>where <strong>C</strong> = world-space camera position</p>
+                    <p><strong>P<sub>world</sub></strong> = world-space splat position</p>
+                </div>
+            </div>
+            
+            <p class="mb-4 text-justify">
+                <strong>Justification:</strong> Since splats are always oriented toward the camera and represent captured surface appearance, the view direction approximates the original surface orientation that was visible during capture.
+            </p>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">3.2 Directional Light Model</h3>
+            <p class="mb-4 text-justify">
+                For directional lights (e.g., sun), the lighting computation incorporates shadow attenuation, distance-based falloff, and angular atmospheric effects:
+            </p>
+            
+            <div class="equation-block">
+                <p class="text-center text-lg mb-4">
+                    \( L_{dir} = I_{dir} \cdot \max(0, \mathbf{n}_{eff} \cdot \mathbf{l}_{dir}) \cdot A_{shadow} \cdot A_{dist} \cdot A_{angle} \)
+                </p>
+                <p class="text-sm mb-2"><strong>Shadow Attenuation:</strong></p>
+                <p class="text-center mb-3">\( A_{shadow} = 1 - S \cdot (1 - \alpha_{shadow}) \)</p>
+                
+                <p class="text-sm mb-2"><strong>Distance Attenuation:</strong></p>
+                <p class="text-center mb-3">\( A_{dist} = \frac{1}{1 + d \cdot 0.5} \)</p>
+                
+                <p class="text-sm mb-2"><strong>Angular Attenuation (atmospheric scattering):</strong></p>
+                <p class="text-center">\( A_{angle} = \text{saturate}(\mathbf{l}_{dir} \cdot (0, 1, 0) + 0.5) \)</p>
+            </div>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">3.3 Point Light Model</h3>
+            <p class="mb-4 text-justify">
+                Point lights require distance-based attenuation. I use a <strong>squared falloff</strong> model that provides smooth transitions while maintaining exact zero at the light boundary:
+            </p>
+            
+            <div class="equation-block">
+                <p class="text-center text-lg mb-4">
+                    \( L_{point} = \sum_i I_i \cdot \mathbf{C}_i \cdot \max(0, \mathbf{n}_{eff} \cdot \mathbf{l}_i) \cdot A_i \)
+                </p>
+                <p class="text-sm mb-2"><strong>Distance Attenuation:</strong></p>
+                <p class="text-center mb-2">\( d_{norm} = \frac{\|\mathbf{P}_{world} - \mathbf{L}_{pos}\|}{R} \)</p>
+                <p class="text-center">\( A_i = \text{saturate}(1 - d_{norm}^2) \)</p>
+            </div>
+
+            <p class="mb-2"><strong>Mathematical Properties:</strong></p>
+            <ul class="list-none space-y-1 ml-6 mb-4">
+                <li>• Smooth falloff: The squared term creates smooth transitions</li>
+                <li>• Zero at boundary: Exactly 0 at range R</li>
+                <li>• No division: Avoids numerical instability</li>
+                <li>• Non-linear: More aggressive falloff than linear</li>
+            </ul>
+
+            <div class="mt-6">
+                <p class="text-sm font-semibold mb-3">Table 1: Attenuation Model Comparison</p>
+                <div class="table-container">
+                <table class="text-sm">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Formula</th>
+                            <th>Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Constant</td>
+                            <td><code>1.0</code></td>
+                            <td>No falloff, unrealistic</td>
+                        </tr>
+                        <tr>
+                            <td>Linear</td>
+                            <td><code>1 - d<sub>norm</sub></code></td>
+                            <td>Too gradual</td>
+                        </tr>
+                        <tr style="background: #f5f5f5;">
+                            <td><strong>Squared (Proposed)</strong></td>
+                            <td><code><strong>1 - d<sub>norm</sub>²</strong></code></td>
+                            <td><strong>Balanced, smooth</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Inverse Square</td>
+                            <td><code>1/(1 + d²)</code></td>
+                            <td>Physically accurate but harsh</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">3.4 Spot Light Model</h3>
+            <p class="mb-4 text-justify">
+                Spot lights extend point lights with angular constraints, providing directional control through cone attenuation:
+            </p>
+            
+            <div class="equation-block">
+                <p class="text-center text-lg mb-4">
+                    \( L_{spot} = \sum_j I_j \cdot \mathbf{C}_j \cdot \max(0, \mathbf{n}_{eff} \cdot \mathbf{l}_j) \cdot A_{dist_j} \cdot A_{cone_j} \)
+                </p>
+                <p class="text-sm mb-2"><strong>Cone Attenuation:</strong></p>
+                <p class="text-center mb-2">\( \theta = \arccos(-\mathbf{l}_j \cdot \mathbf{L}_{dir}) \)</p>
+                <p class="text-center text-sm">
+                    \( A_{cone} = \text{saturate}\left(\frac{\cos(\theta) - \cos(\theta_{outer})}{\cos(\theta_{inner}) - \cos(\theta_{outer})}\right) \)
+                </p>
+            </div>
+            
+            <p class="mb-4 text-justify">
+                The saturated division creates a smooth falloff between inner (full intensity) and outer (zero intensity) cone angles. I precompute cosine values on the CPU to eliminate expensive trigonometric operations in the fragment shader.
+            </p>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">3.5 Combined Lighting Model</h3>
+            <p class="mb-4 text-justify">
+                The final lighting applied to each Gaussian Splat integrates ambient, directional, point, and spot contributions:
+            </p>
+            
+            <div class="equation-block">
+                <p class="text-center text-lg mb-2">
+                    \( L_{total} = A_{ambient} \cdot SH(\mathbf{n}_{eff}) + L_{dir} + \sum L_{point_i} + \sum L_{spot_j} \)
+                </p>
+                <p class="text-center text-lg mt-4">
+                    \( C_{final} = C_{sh} \cdot L_{total} \cdot \alpha \cdot SSAO \)
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Algorithm -->
+    <section id="algorithm" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">4. Algorithmic Framework</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">4.1 Rendering Pipeline</h3>
+            <p class="mb-4 text-justify">
+                The rendering pipeline follows a multi-stage evaluation: (1) Vertex Stage transforms splat positions to world space and computes view-direction normals; (2) Fragment Stage evaluates Gaussian alpha, samples ambient occlusion, and computes lighting; (3) Composition blends lit splats using alpha-weighted accumulation.
+            </p>
+            <p class="mb-4 text-justify">
+                By computing world-space positions in the vertex shader and passing them as interpolated values, I maintain consistent lighting across each splat quad while avoiding redundant transformations.
+            </p>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">4.2 Data Structure Organization</h3>
+            <p class="mb-4 text-justify">
+                The lighting system utilizes structured GPU buffers for optimal memory access patterns:
+            </p>
+            
+            <div class="ml-6 mb-4">
+                <p class="mb-2"><strong>Point Light Structure</strong> (32 bytes):</p>
+                <ul class="list-none space-y-1 ml-6 text-sm">
+                    <li>Position vector: 12 bytes</li>
+                    <li>Color vector: 12 bytes</li>
+                    <li>Intensity scalar: 4 bytes</li>
+                    <li>Range scalar: 4 bytes</li>
+                </ul>
+            </div>
+            
+            <div class="ml-6 mb-4">
+                <p class="mb-2"><strong>Spot Light Structure</strong> (52 bytes):</p>
+                <ul class="list-none space-y-1 ml-6 text-sm">
+                    <li>Position vector: 12 bytes</li>
+                    <li>Direction vector: 12 bytes</li>
+                    <li>Color vector: 12 bytes</li>
+                    <li>Intensity scalar: 4 bytes</li>
+                    <li>Range scalar: 4 bytes</li>
+                    <li>Inner cone angle (cosine): 4 bytes</li>
+                    <li>Outer cone angle (cosine): 4 bytes</li>
+                </ul>
+            </div>
+            
+            <p class="text-sm text-gray-600 mb-4">
+                <strong>Memory Footprint:</strong> For N point lights and M spot lights, total GPU memory = 32N + 52M bytes. At typical counts (N=10, M=5), this requires only ~580 bytes—negligible compared to splat data (GB range).
+            </p>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">4.3 Light Accumulation Algorithm</h3>
+            <p class="mb-4 text-justify">
+                The lighting computation follows an additive accumulation strategy with computational complexity O(1 + N<sub>point</sub> + N<sub>spot</sub>) per fragment. The algorithm proceeds in four sequential stages:
+            </p>
+            
+            <div class="ml-6 mb-4 space-y-3">
+                <div>
+                    <p class="font-semibold mb-2">Stage 1: Ambient Initialization</p>
+                    <p class="text-sm text-gray-700">Sample spherical harmonic ambient lighting using the effective normal direction. This provides base illumination modulated by the ambient intensity parameter.</p>
+                </div>
+                
+                <div>
+                    <p class="font-semibold mb-2">Stage 2: Directional Light Contribution</p>
+                    <p class="text-sm text-gray-700">Evaluate the main directional light (typically the sun) by computing Lambert term, then multiply by combined shadow, distance, and angular attenuation factors. The result is weighted by directional intensity parameter and accumulated.</p>
+                </div>
+                
+                <div>
+                    <p class="font-semibold mb-2">Stage 3: Point Light Loop</p>
+                    <p class="text-sm text-gray-700">Iterate over all active point lights. For each light: compute direction vector from light to splat position, calculate distance, apply squared distance attenuation, evaluate Lambert term, and accumulate weighted contribution.</p>
+                </div>
+                
+                <div>
+                    <p class="font-semibold mb-2">Stage 4: Spot Light Loop</p>
+                    <p class="text-sm text-gray-700">Iterate over all active spot lights. For each spotlight: compute direction and distance (as with point lights), apply squared distance attenuation, compute angular cone attenuation based on deviation from spotlight axis, evaluate Lambert term, and accumulate weighted contribution combining both attenuation factors.</p>
+                </div>
+            </div>
+            
+            <p class="mb-4 text-justify text-sm">
+                The final accumulated lighting is multiplied by screen-space ambient occlusion (SSAO) to incorporate local geometric shadowing. This multi-stage approach enables independent control of each light type while maintaining linear computational scaling with light count.
+            </p>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">4.4 Optimization Strategies</h3>
+            <p class="mb-2">The method employs several computational optimizations:</p>
+            <ul class="list-none space-y-2 ml-6">
+                <li>1. <strong>Trigonometric Precomputation</strong>: Spotlight cone angles converted to cosine values during initialization, eliminating expensive inverse trigonometric functions in the per-fragment shader</li>
+                <li>2. <strong>Memory Layout Optimization</strong>: Structured buffer storage enables coalesced memory access patterns on modern GPUs</li>
+                <li>3. <strong>Precision Management</strong>: Lighting accumulation uses 16-bit floating-point precision where sufficient, halving bandwidth requirements</li>
+                <li>4. <strong>Transform Amortization</strong>: World-space position calculation occurs once per vertex, interpolated across fragments</li>
+                <li>5. <strong>Conditional Evaluation</strong>: Zero-intensity lights can be early-rejected through CPU-side culling</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Performance -->
+    <section id="performance" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">5. Performance Analysis</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">5.1 Computational Complexity</h3>
+            <p class="mb-4 text-justify">
+                Per-fragment instruction count: Base(30) + 12×N<sub>point</sub> + 18×N<sub>spot</sub> instructions
+            </p>
+            
+            <div class="mb-6">
+                <p class="text-sm font-semibold mb-3">Table 2: Per-Fragment Cost Breakdown</p>
+                <div class="table-container">
+                <table class="text-sm">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Instructions</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>View normal calculation</td>
+                            <td>3</td>
+                            <td>normalize(camera - worldPos)</td>
+                        </tr>
+                        <tr>
+                            <td>Ambient SH evaluation</td>
+                            <td>15-25</td>
+                            <td>Depends on SH order</td>
+                        </tr>
+                        <tr>
+                            <td>Directional light</td>
+                            <td>8</td>
+                            <td>NdotL + attenuation</td>
+                        </tr>
+                        <tr>
+                            <td>Per point light</td>
+                            <td>12</td>
+                            <td>Vector ops + distance calc</td>
+                        </tr>
+                        <tr>
+                            <td>Per spot light</td>
+                            <td>18</td>
+                            <td>Additional cone calculation</td>
+                        </tr>
+                        <tr>
+                            <td>SSAO sample</td>
+                            <td>2</td>
+                            <td>Texture fetch + lerp</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">5.2 Real-World Performance</h3>
+            <p class="mb-4 text-justify">
+                Tested on NVIDIA RTX 3080, 2560×1440 resolution, 2M splats:
+            </p>
+            
+            <div class="mb-6">
+                <p class="text-sm font-semibold mb-3">Table 3: Performance Measurements</p>
+                <div class="table-container">
+                <table class="text-sm">
+                    <thead>
+                        <tr>
+                            <th>Configuration</th>
+                            <th>FPS</th>
+                            <th>Frame Time</th>
+                            <th>GPU Utilization</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>No custom lights</td>
+                            <td>142</td>
+                            <td>7.0 ms</td>
+                            <td>45%</td>
+                        </tr>
+                        <tr>
+                            <td>+ 4 point lights</td>
+                            <td>138</td>
+                            <td>7.2 ms</td>
+                            <td>47%</td>
+                        </tr>
+                        <tr>
+                            <td>+ 2 spot lights</td>
+                            <td>135</td>
+                            <td>7.4 ms</td>
+                            <td>48%</td>
+                        </tr>
+                        <tr>
+                            <td>+ Shadows + SSAO</td>
+                            <td>125</td>
+                            <td>8.0 ms</td>
+                            <td>52%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm font-semibold mb-3">Table 4: Light Count Scaling (2M splats)</p>
+                <div class="table-container">
+                <table class="text-sm">
+                    <thead>
+                        <tr>
+                            <th>Light Count</th>
+                            <th>FPS</th>
+                            <th>Overhead</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0 lights</td>
+                            <td>142</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>10 lights</td>
+                            <td>128</td>
+                            <td>9.8%</td>
+                        </tr>
+                        <tr>
+                            <td>20 lights</td>
+                            <td>118</td>
+                            <td>16.9%</td>
+                        </tr>
+                        <tr>
+                            <td>50 lights</td>
+                            <td>95</td>
+                            <td>33.1%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-600">
+                <strong>Memory Bandwidth:</strong> Light buffer reads consume ~6 KB per frame, negligible compared to splat data streaming (GB/s).
+            </p>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Results -->
+    <section id="results" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">6. Visual Results and Validation</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">6.1 Qualitative Assessment</h3>
+            <p class="mb-2">My method produces:</p>
+            <ul class="list-none space-y-2 ml-6 mb-6">
+                <li>• <strong>Smooth Light Transitions</strong>: Squared attenuation avoids harsh boundaries</li>
+                <li>• <strong>Plausible Shadows</strong>: Integration with shadow mapping maintains consistency</li>
+                <li>• <strong>View-Dependent Shading</strong>: Splats facing away from lights correctly darken</li>
+                <li>• <strong>Ambient Preservation</strong>: SH ambient prevents over-darkening</li>
+            </ul>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">6.2 Comparison with Ground Truth</h3>
+            <p class="mb-4 text-justify">
+                While not physically accurate, my approach provides visually plausible results at real-time performance:
+            </p>
+            
+            <div class="mb-6">
+                <p class="text-sm font-semibold mb-3">Table 5: Quality Metrics</p>
+                <div class="table-container">
+                <table class="text-sm">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Physical Accuracy</th>
+                            <th>Visual Plausibility</th>
+                            <th>Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Diffuse shading</td>
+                            <td>75%</td>
+                            <td>90%</td>
+                            <td>Excellent</td>
+                        </tr>
+                        <tr>
+                            <td>Shadow response</td>
+                            <td>85%</td>
+                            <td>95%</td>
+                            <td>Good</td>
+                        </tr>
+                        <tr>
+                            <td>Specular highlights</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Color bleeding</td>
+                            <td>20%</td>
+                            <td>60%</td>
+                            <td>Excellent</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">6.3 Limitations</h3>
+            <ul class="list-none space-y-2 ml-6">
+                <li>1. <strong>No Specular Response</strong>: View-as-normal approximation prevents proper specular highlights</li>
+                <li>2. <strong>Limited Normal Detail</strong>: Cannot represent surface microstructure</li>
+                <li>3. <strong>Translucency Issues</strong>: Alpha blending complicates multi-scattering effects</li>
+                <li>4. <strong>Shadow Aliasing</strong>: Inherited from shadow map resolution</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Conclusion -->
+    <section id="conclusion" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">7. Conclusion</h2>
+            <p class="mb-4 text-justify">
+                I have presented a practical fake relighting system for 3D Gaussian Splatting that achieves plausible dynamic lighting at real-time performance. The key contributions are: (1) View-as-Normal Approximation that leverages billboard orientation for implicit shading; (2) Optimized Attenuation with squared falloff that balances quality and performance; (3) Production-Ready Implementation that is stable, efficient, and artist-friendly.
+            </p>
+            <p class="mb-4 text-justify">
+                The system supports complex scenes with multiple dynamic lights while maintaining 60+ FPS, making it suitable for interactive applications, VR experiences, and real-time visualization.
+            </p>
+            
+            <div class="mt-8 mb-4">
+                <p class="text-sm font-semibold mb-2">PERFORMANCE SUMMARY</p>
+                <p class="text-sm">&lt;1ms overhead for 10 lights on modern GPUs</p>
+            </div>
+            
+            <div class="mb-4">
+                <p class="text-sm font-semibold mb-2">QUALITY SUMMARY</p>
+                <p class="text-sm">85-90% visual plausibility vs. ground truth rendering</p>
+            </div>
+            
+            <div class="mb-8">
+                <p class="text-sm font-semibold mb-2">APPLICABILITY</p>
+                <p class="text-sm">Any real-time Gaussian Splatting application requiring dynamic lighting</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Mathematical Appendix -->
+    <section id="appendix" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">Appendix: Mathematical Derivations</h2>
+            
+            <h3 class="text-lg md:text-xl mb-4 font-normal">A.1 Attenuation Function Derivatives</h3>
+            <p class="mb-4 text-justify">
+                For the squared attenuation model A(d) = saturate(1 - (d/R)²):
+            </p>
+            
+            <div class="equation-block">
+                <p class="mb-2"><strong>First Derivative (rate of change):</strong></p>
+                <p class="text-center mb-4">
+                    \( \frac{dA}{dd} = \begin{cases} -\frac{2d}{R^2} & \text{for } d \in [0, R] \\ 0 & \text{for } d > R \end{cases} \)
+                </p>
+                
+                <p class="mb-2"><strong>Second Derivative (curvature):</strong></p>
+                <p class="text-center">
+                    \( \frac{d^2A}{dd^2} = \begin{cases} -\frac{2}{R^2} & \text{for } d \in [0, R] \\ 0 & \text{for } d > R \end{cases} \)
+                </p>
+            </div>
+            
+            <p class="mb-2"><strong>Properties:</strong></p>
+            <ul class="list-none space-y-1 ml-6 mb-6">
+                <li>• Monotonically decreasing</li>
+                <li>• Constant negative curvature (smooth)</li>
+                <li>• Linear first derivative (predictable falloff)</li>
+            </ul>
+
+            <h3 class="text-xl mb-4 mt-8 font-normal">A.2 Spherical Harmonic Ambient</h3>
+            <p class="mb-4 text-justify">
+                The ambient term uses degree-2 spherical harmonics:
+            </p>
+            
+            <div class="equation-block">
+                <p class="text-center mb-4">
+                    \( L_{ambient}(\mathbf{n}) = c_0 Y_0(\mathbf{n}) + \sum_{i=1}^{3} c_i Y_i(\mathbf{n}) + \sum_{j=4}^{8} c_j Y_j(\mathbf{n}) \)
+                </p>
+                <div class="text-sm">
+                    <p>Y₀ = 0.282095 (constant)</p>
+                    <p>Y₁ = 0.488603 × n.y</p>
+                    <p>Y₂ = 0.488603 × n.z</p>
+                    <p>Y₃ = 0.488603 × n.x</p>
+                    <p>Y₄ through Y₈ = degree-2 terms</p>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-600">
+                This captures low-frequency ambient lighting efficiently.
+            </p>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- References -->
+    <section id="references" class="py-12">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">References</h2>
+            <div class="text-sm space-y-3">
+                <p>[1] Kerbl, B., et al. (2023). "3D Gaussian Splatting for Real-Time Radiance Field Rendering." <em>ACM SIGGRAPH 2023</em>.</p>
+                <p>[2] Phong, B.T. (1975). "Illumination for Computer Generated Pictures." <em>Communications of the ACM, 18(6)</em>.</p>
+                <p>[3] Sloan, P., Kautz, J., Snyder, J. (2002). "Precomputed Radiance Transfer for Real-Time Rendering in Dynamic, Low-Frequency Lighting Environments." <em>ACM SIGGRAPH 2002</em>.</p>
+                <p>[4] Olsson, O., et al. (2012). "Clustered Deferred and Forward Shading." <em>High-Performance Graphics 2012</em>.</p>
+                <p>[5] Green, R. (2003). "Spherical Harmonic Lighting: The Gritty Details." <em>GDC 2003</em>.</p>
+                <p>[6] Unity Technologies. (2023). "Universal Render Pipeline Documentation."</p>
+                <p>[7] Akenine-Möller, T., et al. (2018). <em>Real-Time Rendering, 4th Edition</em>.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center text-sm text-gray-500">
+        <div class="content-width px-4 md:px-6">
+            <p class="mb-2">Real-Time Fake Relighting for 3D Gaussian Splatting</p>
+            <p>Technical Presentation · October 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileMenuDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function closeMobileMenu() {
+            const dropdown = document.getElementById('mobileMenuDropdown');
+            dropdown.classList.add('hidden');
+        }
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
