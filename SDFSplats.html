@@ -112,13 +112,13 @@
             <h2 class="text-2xl md:text-3xl mb-6">Abstract</h2>
             <div class="text-justify">
                 <p class="mb-4">
-                    We present SDF-Splats, a novel hybrid approach that combines explicit Gaussian Splat primitives with implicit Signed Distance Field representations to address the fundamental gap-filling problem in 3D Gaussian Splatting. Traditional Gaussian Splatting excels at representing captured surfaces but suffers from visible holes in under-sampled regions, transparency artifacts, and inability to extrapolate beyond captured views.
+                    I present SDF-Splats, a novel hybrid approach that combines explicit Gaussian Splat primitives with implicit Signed Distance Field representations to address the fundamental gap-filling problem in 3D Gaussian Splatting. Traditional Gaussian Splatting excels at representing captured surfaces but suffers from visible holes in under-sampled regions, transparency artifacts, and inability to extrapolate beyond captured views.
                 </p>
                 <p class="mb-4">
-                    Our method constructs a sparse volumetric SDF by sampling the implicit geometry encoded within the Gaussian distribution field, then employs GPU-accelerated raymarching to fill detected gaps seamlessly. The key innovation is a dual-representation strategy: explicit splats for high-frequency detail and implicit SDF for robust gap filling. This hybrid approach achieves visually seamless reconstruction at 30-60 FPS while maintaining the memory efficiency of traditional Gaussian Splatting.
+                    My method constructs a sparse volumetric SDF by sampling the implicit geometry encoded within the Gaussian distribution field, then employs GPU-accelerated raymarching to fill detected gaps seamlessly. The key innovation is a dual-representation strategy: explicit splats for high-frequency detail and implicit SDF for robust gap filling. This hybrid approach achieves visually seamless reconstruction at 30-60 FPS while maintaining the memory efficiency of traditional Gaussian Splatting.
                 </p>
                 <p class="mb-4">
-                    We demonstrate that by treating the Gaussian field as a continuous density function and constructing local SDFs on-demand, we can interpolate missing geometry with correct depth ordering, proper lighting response, and minimal visual discontinuity. Our method requires no preprocessing or neural network inference, making it suitable for real-time applications including VR, architectural visualization, and interactive scene exploration.
+                    I demonstrate that by treating the Gaussian field as a continuous density function and constructing local SDFs on-demand, I can interpolate missing geometry with correct depth ordering, proper lighting response, and minimal visual discontinuity. My method requires no preprocessing or neural network inference, making it suitable for real-time applications including VR, architectural visualization, and interactive scene exploration.
                 </p>
             </div>
             
@@ -165,11 +165,11 @@
             </ul>
 
             <p class="mb-4 text-justify">
-                The challenge: traditional SDF construction requires dense volumetric grids (memory intensive) or neural networks (too slow for real-time). Our insight is that <em>the Gaussian field itself implicitly encodes an SDF through its density distribution</em>.
+                The challenge: traditional SDF construction requires dense volumetric grids (memory intensive) or neural networks (too slow for real-time). My insight is that <em>the Gaussian field itself implicitly encodes an SDF through its density distribution</em>.
             </p>
 
             <h3 class="text-xl mb-4 mt-8 font-normal">1.3 Contributions</h3>
-            <p class="mb-2">We introduce a hybrid Gaussian-SDF system with:</p>
+            <p class="mb-2">I introduce a hybrid Gaussian-SDF system with:</p>
             <ul class="list-none space-y-2 ml-6">
                 <li>1. <strong>On-Demand SDF Construction</strong>: Build sparse local SDFs only where gaps are detected</li>
                 <li>2. <strong>Gaussian Field Sampling</strong>: Treat overlapping Gaussians as a continuous density field</li>
@@ -213,7 +213,7 @@
 
             <h3 class="text-xl mb-4 mt-8 font-normal">2.2 Constructing the SDF from Density</h3>
             <p class="mb-4 text-justify">
-                We convert density field \( \rho(\mathbf{p}) \) to a signed distance approximation. The key insight: <em>high density regions represent surfaces</em>. We define an iso-surface threshold \( \tau \) and construct:
+                I convert density field \( \rho(\mathbf{p}) \) to a signed distance approximation. The key insight: <em>high density regions represent surfaces</em>. I define an iso-surface threshold \( \tau \) and construct:
             </p>
 
             <div class="equation-block">
@@ -231,12 +231,12 @@
             </div>
 
             <p class="mb-4 text-justify">
-                <strong>Practical Approximation:</strong> For real-time performance, we use a simplified distance metric based on Gaussian kernel radius and accumulated weights rather than full inverse covariance computation.
+                <strong>Practical Approximation:</strong> For real-time performance, I use a simplified distance metric based on Gaussian kernel radius and accumulated weights rather than full inverse covariance computation.
             </p>
 
             <h3 class="text-xl mb-4 mt-8 font-normal">2.3 Sphere Tracing Algorithm</h3>
             <p class="mb-4 text-justify">
-                Given ray origin \( \mathbf{o} \) and direction \( \mathbf{d} \), we march along the ray using the SDF to guide step sizes:
+                Given ray origin \( \mathbf{o} \) and direction \( \mathbf{d} \), I march along the ray using the SDF to guide step sizes:
             </p>
 
             <div class="algorithm-box">
@@ -267,7 +267,7 @@ return ∅  // Max iterations
 
             <h3 class="text-xl mb-4 mt-8 font-normal">2.4 Gap Detection Strategy</h3>
             <p class="mb-4 text-justify">
-                We employ a screen-space gap detector before invoking expensive raymarching:
+                I employ a screen-space gap detector before invoking expensive raymarching:
             </p>
 
             <div class="equation-block">
@@ -283,7 +283,7 @@ return ∅  // Max iterations
             </div>
 
             <p class="mb-4 text-justify">
-                This dual criterion ensures we only raymarch in genuine gaps (low alpha) that represent scene boundaries (high gradient), avoiding wasted computation in empty background or well-covered regions.
+                This dual criterion ensures I only raymarch in genuine gaps (low alpha) that represent scene boundaries (high gradient), avoiding wasted computation in empty background or well-covered regions.
             </p>
         </div>
     </section>
@@ -297,7 +297,7 @@ return ∅  // Max iterations
             
             <h3 class="text-lg md:text-xl mb-4 font-normal">3.1 Spatial Acceleration Structure</h3>
             <p class="mb-4 text-justify">
-                Naively sampling all splats for each raymarch step is O(N·M) where N = splat count, M = raymarch steps. For real-time performance, we employ:
+                Naively sampling all splats for each raymarch step is O(N·M) where N = splat count, M = raymarch steps. For real-time performance, I employ:
             </p>
 
             <div class="ml-6 mb-4">
@@ -382,7 +382,7 @@ return fragColor;
 
             <h3 class="text-xl mb-4 mt-8 font-normal">3.4 Normal Estimation via SDF Gradient</h3>
             <p class="mb-4 text-justify">
-                Once a surface hit is found, we estimate the normal using central differences on the SDF:
+                Once a surface hit is found, I estimate the normal using central differences on the SDF:
             </p>
 
             <div class="equation-block">
@@ -633,10 +633,10 @@ return fragColor;
             
             <h3 class="text-lg md:text-xl mb-4 font-normal">6.1 Summary</h3>
             <p class="mb-4 text-justify">
-                We presented SDF-Splats, a hybrid explicit-implicit representation that addresses the fundamental gap-filling problem in 3D Gaussian Splatting. By treating the Gaussian field as a continuous density function and constructing on-demand SDFs for raymarching, we achieve seamless reconstruction without preprocessing or neural network inference.
+                I presented SDF-Splats, a hybrid explicit-implicit representation that addresses the fundamental gap-filling problem in 3D Gaussian Splatting. By treating the Gaussian field as a continuous density function and constructing on-demand SDFs for raymarching, I achieve seamless reconstruction without preprocessing or neural network inference.
             </p>
             <p class="mb-4 text-justify">
-                Our method demonstrates that combining the strengths of explicit splats (detail, speed) with implicit SDFs (continuity, gap-filling) produces superior results compared to either representation alone. The system maintains real-time performance suitable for interactive applications while significantly improving visual quality in under-sampled regions.
+                My method demonstrates that combining the strengths of explicit splats (detail, speed) with implicit SDFs (continuity, gap-filling) produces superior results compared to either representation alone. The system maintains real-time performance suitable for interactive applications while significantly improving visual quality in under-sampled regions.
             </p>
 
             <h3 class="text-xl mb-4 mt-8 font-normal">6.2 Future Directions</h3>
