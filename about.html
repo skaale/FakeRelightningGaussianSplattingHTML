@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Daniel Skaale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.7;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            border-bottom: 1px solid #000;
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            font-size: 0.85rem;
+            color: #000;
+            text-decoration: none;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid #000;
+            padding: 0.5rem 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            margin-top: 1rem;
+        }
+        .mobile-nav.active {
+            display: flex;
+        }
+        .mobile-nav a {
+            font-size: 0.9rem;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 10rem 2rem 4rem;
+            border-bottom: 1px solid #000;
+        }
+        .hero-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+        .hero-content h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+        .hero-content .role {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        .hero-content p {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .social-links {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+        .social-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: #000;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #000;
+            transition: all 0.2s;
+        }
+        .social-links a:hover {
+            background: #000;
+            color: #fff;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        .content-section:last-of-type {
+            border-bottom: none;
+        }
+        .content-section h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .content-section h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 2rem 0 0.75rem;
+        }
+        .content-section p {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .content-section ul {
+            margin: 1rem 0 1rem 1.5rem;
+            color: #333;
+        }
+        .content-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        .skill-category h4 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 0.75rem;
+        }
+        .skill-category ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .skill-category li {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+        
+        /* Work Timeline */
+        .timeline-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-title {
+            font-weight: 500;
+        }
+        .timeline-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: #999;
+        }
+        .timeline-company {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .project-card {
+            border: 1px solid #e0e0e0;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .project-card:hover {
+            border-color: #000;
+        }
+        .project-card h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .project-card p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+        .project-card .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid #000;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        footer p {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        footer a {
+            color: #000;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .hero {
+                padding: 8rem 1.5rem 3rem;
+            }
+            .hero-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .profile-image {
+                margin: 0 auto;
+                width: 150px;
+                height: 150px;
+                border-radius: 0;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .social-links {
+                justify-content: center;
+            }
+            .content-section {
+                padding: 3rem 1.5rem;
+            }
+            .skills-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="logo">Simulacrum Inc</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="Shop.html">Shop</a>
+                <a href="index.html#articles">Articles</a>
+                <a href="about.html">About</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Menu</button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="index.html">Home</a>
+            <a href="Shop.html">Shop</a>
+            <a href="index.html#articles">Articles</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="profile-image">
+                <img src="danielAbout.jpg" alt="Daniel Skaale">
+            </div>
+            <div class="hero-content">
+                <h1>Daniel Skaale</h1>
+                <p class="role">Partner & Technical Artist at Khora ApS</p>
+                <p>
+                    Technical Artist specializing in real-time graphics, VR development, and 
+                    emerging rendering technologies. Based in Central Copenhagen, working at 
+                    the intersection of art and engineering to push the boundaries of immersive experiences.
+                </p>
+                <div class="social-links">
+                    <a href="https://x.com/DSkaale" target="_blank">X / Twitter</a>
+                    <a href="https://www.khora.com" target="_blank">Khora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="content-section">
+        <h2>About</h2>
+        <p>
+            I'm a Partner and Technical Artist at Khora ApS, one of Scandinavia's leading VR studios 
+            based in the heart of Copenhagen. My work focuses on bridging the gap between artistic 
+            vision and technical implementation, developing tools and pipelines that empower creative 
+            teams to build immersive virtual reality experiences.
+        </p>
+        <p>
+            With a deep passion for real-time rendering and interactive graphics, I explore cutting-edge 
+            technologies like 3D Gaussian Splatting, neural rendering, and novel approaches to dynamic 
+            lighting. I believe in sharing knowledge openly and contributing tools that help the broader 
+            community push the boundaries of what's possible in real-time graphics.
+        </p>
+        <p>
+            At Khora, I've had the opportunity to work on diverse VR projects spanning training 
+            simulations, therapeutic applications, architectural visualization, and interactive 
+            storytelling—each presenting unique technical challenges that drive innovation.
+        </p>
+    </section>
+
+    <!-- Current Work -->
+    <section class="content-section">
+        <h2>Current Focus</h2>
+        
+        <h3>3D Gaussian Splatting</h3>
+        <p>
+            Developing Unity-based tools for working with 3D Gaussian Splats—a revolutionary 
+            representation for photorealistic scene capture. My research includes editor plugins 
+            for splat manipulation and novel approaches to real-time relighting of splat-based scenes.
+        </p>
+        
+        <h3>VR Development</h3>
+        <p>
+            Creating immersive VR experiences at Khora, with focus on performance optimization, 
+            visual fidelity, and user comfort. Working across the full stack from shader development 
+            to interaction design.
+        </p>
+        
+        <h3>Technical Art & Tools</h3>
+        <p>
+            Building custom editor tools, shaders, and pipelines that accelerate production workflows. 
+            Passionate about democratizing complex graphics techniques through accessible tooling.
+        </p>
+    </section>
+
+    <!-- Skills -->
+    <section class="content-section">
+        <h2>Skills & Technologies</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h4>Development</h4>
+                <ul>
+                    <li>Unity Engine (C#)</li>
+                    <li>HLSL / GLSL Shaders</li>
+                    <li>Compute Shaders</li>
+                    <li>VR SDKs (OpenXR, Oculus)</li>
+                    <li>Editor Tooling</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h4>Graphics</h4>
+                <ul>
+                    <li>Real-time Rendering</li>
+                    <li>3D Gaussian Splatting</li>
+                    <li>PBR Materials</li>
+                    <li>Lighting & Shadows</li>
+                    <li>Post-processing</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h4>Pipelines</h4>
+                <ul>
+                    <li>URP / HDRP</li>
+                    <li>Asset Optimization</li>
+                    <li>Performance Profiling</li>
+                    <li>Build Automation</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h4>Platforms</h4>
+                <ul>
+                    <li>Meta Quest</li>
+                    <li>PC VR</li>
+                    <li>Desktop / WebGL</li>
+                    <li>Mobile</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="content-section">
+        <h2>Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="tag">Unity Plugin</div>
+                <h4>Gaussian Splat Editor</h4>
+                <p>Visual tools for editing 3D Gaussian Splats in Unity. Selection, transformation, PLY import/export.</p>
+            </div>
+            <div class="project-card">
+                <div class="tag">Research</div>
+                <h4>Fake Relighting for 3DGS</h4>
+                <p>Real-time dynamic lighting for Gaussian Splats without surface normals.</p>
+            </div>
+            <div class="project-card">
+                <div class="tag">VR</div>
+                <h4>Khora VR Projects</h4>
+                <p>Various VR experiences for training, therapy, and visualization.</p>
+            </div>
+            <div class="project-card">
+                <div class="tag">Tools</div>
+                <h4>Unity Shader Library</h4>
+                <p>Collection of optimized shaders for VR and real-time applications.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="content-section">
+        <h2>Contact</h2>
+        <p>
+            For inquiries about VR development, consulting, or collaboration opportunities, 
+            feel free to reach out via X or through Khora.
+        </p>
+        <div class="social-links" style="margin-top: 1.5rem;">
+            <a href="https://x.com/DSkaale" target="_blank">@DSkaale on X</a>
+            <a href="https://www.khora.com" target="_blank">khora.com</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Daniel Skaale · <a href="index.html">Simulacrum Inc</a></p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
