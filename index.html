@@ -35,75 +35,55 @@
             border-top: 1px solid #e0e0e0;
             margin: 3rem 0;
         }
-        
-        /* Stripe Purchase Styles */
-        .purchase-section {
-            background: #fdfdfd;
-            border-radius: 12px;
-            padding: 4rem 2rem;
-            text-align: center;
-            border: 1px solid #eee;
-            margin-top: 4rem;
+        .nav-shop-link {
+            color: #635bff;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
         }
-        .stripe-button {
+        .nav-shop-link:hover {
+            border-bottom-color: #635bff;
+        }
+        .cart-icon {
+            position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: #635bff;
-            color: white !important;
-            padding: 12px 32px;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none !important;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            width: 36px;
+            height: 36px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
         }
-        .stripe-button:hover {
-            background-color: #5851e0;
-            transform: translateY(-1px);
-            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        .cart-icon:hover {
+            background: #e8e8e8;
         }
-        .stripe-button svg {
-            margin-right: 10px;
+        .cart-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: #333;
         }
-        .nav-buy-btn {
-            background-color: #635bff;
-            color: white !important;
-            padding: 6px 16px;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-        .nav-buy-btn:hover {
-            opacity: 0.9;
-        }
-        .price-tag {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin: 1.5rem 0;
-            color: #333;
-        }
-        .product-features {
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
-            text-align: left;
-            list-style: none;
-            padding: 0;
-        }
-        .product-features li {
-            padding: 0.5rem 0;
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #635bff;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            color: #666;
+            justify-content: center;
         }
-        .product-features li::before {
-            content: '✓';
-            color: #635bff;
-            font-weight: bold;
-            margin-right: 15px;
+        .cart-badge.hidden {
+            display: none;
         }
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -187,7 +167,11 @@
                     <a href="#algorithm" class="nav-link whitespace-nowrap">Algorithm</a>
                     <a href="#performance" class="nav-link whitespace-nowrap">Performance</a>
                     <a href="#conclusion" class="nav-link whitespace-nowrap">Conclusion</a>
-                    <a href="#purchase" class="nav-buy-btn whitespace-nowrap">Get Code</a>
+                    <a href="Shop.html" class="nav-shop-link whitespace-nowrap">Shop</a>
+                    <a href="Shop.html#cart" class="cart-icon" id="cartIconDesktop" title="Shopping Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        <span class="cart-badge hidden" id="cartBadgeDesktop">0</span>
+                    </a>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -205,7 +189,7 @@
                 <a href="#algorithm" class="block py-2 nav-link" onclick="closeMobileMenu()">Algorithm</a>
                 <a href="#performance" class="block py-2 nav-link" onclick="closeMobileMenu()">Performance</a>
                 <a href="#conclusion" class="block py-2 nav-link" onclick="closeMobileMenu()">Conclusion</a>
-                <a href="#purchase" class="block py-2 nav-buy-btn text-center mt-2" onclick="closeMobileMenu()">Get Code ($79)</a>
+                <a href="Shop.html" class="block py-2 nav-shop-link" onclick="closeMobileMenu()">🛒 Shop</a>
             </div>
         </div>
     </nav>
@@ -864,38 +848,6 @@
 
     <div class="section-divider content-width"></div>
 
-    <!-- Purchase Section -->
-    <section id="purchase" class="py-16">
-        <div class="content-width px-4 md:px-6">
-            <div class="purchase-section">
-                <h2 class="text-3xl md:text-4xl mb-4">Get the Source Code</h2>
-                <p class="text-gray-600 mb-8">Purchase the complete implementation of the Fake Relighting system for 3D Gaussian Splatting.</p>
-                
-                <div class="price-tag">$79</div>
-                
-                <ul class="product-features">
-                    <li>Full source code (Shaders, Light Manager, integration examples)</li>
-                    <li>Highly optimized HLSL/GLSL implementations</li>
-                    <li>Support for point, spot, and directional lights</li>
-                    <li>SSAO and Shadow Mapping integration samples</li>
-                    <li>Documentation and setup guide included</li>
-                    <li>Lifetime updates for the v1.x branch</li>
-                </ul>
-
-                <a href="https://buy.stripe.com/dRm3co2xrdCKaxk5sU7kc00" class="stripe-button">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.6667 3.33333V16.6667M11.6667 3.33333C11.6667 2.41286 10.9205 1.66667 10 1.66667H6.66667C5.74619 1.66667 5 2.41286 5 3.33333V16.6667C5 17.5872 5.74619 18.3333 6.66667 18.3333H10C10.9205 18.3333 11.6667 17.5872 11.6667 16.6667M11.6667 3.33333H13.3333C14.2538 3.33333 15 4.11111 15 5.07407V14.9259C15 15.8889 14.2538 16.6667 13.3333 16.6667H11.6667" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    Buy via Stripe
-                </a>
-                
-                <p class="text-xs text-gray-500 mt-6 italic">Secure payment processed by Stripe. You will receive a ZIP file containing all source files immediately after purchase.</p>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider content-width"></div>
-
     <!-- References -->
     <section id="references" class="py-12">
         <div class="content-width px-4 md:px-6">
@@ -947,6 +899,24 @@
                 }
             });
         });
+
+        // Shopping Cart functionality
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badges = document.querySelectorAll('.cart-badge');
+            badges.forEach(badge => {
+                if (totalItems > 0) {
+                    badge.textContent = totalItems;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Initialize cart badge on page load
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 </body>
 </html>

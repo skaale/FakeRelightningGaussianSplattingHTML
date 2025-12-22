@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Purchase Complete</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+        }
+        .content-width {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .success-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #86efac;
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, #635bff 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-top: 1.5rem;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 91, 255, 0.3);
+        }
+        .download-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        .info-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .info-box h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.75rem;
+        }
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .info-box li {
+            padding: 0.4rem 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .info-box li::before {
+            content: '•';
+            color: #635bff;
+        }
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        .nav-link:hover {
+            border-bottom-color: #333;
+        }
+        .mobile-menu {
+            display: none;
+        }
+        .desktop-menu {
+            display: flex;
+        }
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .success-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+        <div class="max-w-full px-4 md:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-xs md:text-sm font-light tracking-wide text-gray-900 no-underline">GAUSSIAN SPLAT RELIGHTING</a>
+                
+                <!-- Desktop Menu -->
+                <div class="desktop-menu space-x-6 text-sm items-center">
+                    <a href="index.html" class="nav-link whitespace-nowrap">Home</a>
+                    <a href="Shop.html" class="nav-link whitespace-nowrap">Shop</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu text-sm" onclick="toggleMobileMenu()">☰ Menu</button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenuDropdown" class="mobile-menu hidden mt-4 space-y-2 text-sm">
+                <a href="index.html" class="block py-2 nav-link">Home</a>
+                <a href="Shop.html" class="block py-2 nav-link">Shop</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Content -->
+    <section class="pt-32 pb-16 min-h-screen">
+        <div class="content-width px-4 md:px-6">
+            <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h1 class="text-3xl md:text-4xl mb-4">Thank You for Your Purchase!</h1>
+                <p class="text-gray-600 mb-2">
+                    Your payment was successful. You now have access to the Gaussian Splat Editor.
+                </p>
+                <p class="text-sm text-gray-500">
+                    A receipt has been sent to your email address.
+                </p>
+                
+                <div class="info-box" style="background: #f0f9ff; border-color: #7dd3fc;">
+                    <h3>📧 Check Your Email</h3>
+                    <p style="color: #0369a1; margin: 0;">
+                        Stripe has sent a <strong>download link</strong> to your email address. 
+                        Check your inbox (and spam folder) for an email from Stripe containing your files.
+                    </p>
+                </div>
+                
+                <div class="info-box">
+                    <h3>📦 What's Included in Your Download</h3>
+                    <ul>
+                        <li>GaussianSplatEditor.unitypackage</li>
+                        <li>Documentation (PDF)</li>
+                        <li>Sample scenes and assets</li>
+                        <li>License file</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3>❓ Need Help?</h3>
+                    <ul>
+                        <li>Didn't receive the email? Check your spam/junk folder</li>
+                        <li>Download links are valid for 30 days</li>
+                        <li>Contact support with your order number for assistance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-sm text-gray-500 border-t border-gray-200">
+        <div class="content-width px-4 md:px-6">
+            <p><a href="index.html" class="text-gray-500 hover:text-gray-700">← Back to Home</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileMenuDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        // Clear cart after successful purchase
+        localStorage.removeItem('gsplatCart');
+    </script>
+</body>
+</html>
+

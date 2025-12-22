@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Gaussian Splat Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+        }
+        .content-width {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        .nav-link:hover {
+            border-bottom-color: #333;
+        }
+        .nav-shop-link {
+            color: #635bff;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid #635bff;
+        }
+        .cart-icon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .cart-icon:hover {
+            background: #e8e8e8;
+        }
+        .cart-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: #333;
+        }
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #635bff;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-badge.hidden {
+            display: none;
+        }
+        .mobile-menu {
+            display: none;
+        }
+        .desktop-menu {
+            display: flex;
+        }
+        
+        /* Product Card */
+        .product-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .product-card:hover {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+        }
+        .product-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+        .product-body {
+            padding: 1.5rem;
+        }
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .product-desc {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .product-price {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        .add-to-cart-btn {
+            display: block;
+            width: 100%;
+            background: #635bff;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-to-cart-btn:hover {
+            background: #5046e5;
+        }
+        .add-to-cart-btn:disabled {
+            background: #10b981;
+            cursor: default;
+        }
+        
+        /* Cart Section */
+        .cart-section {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        .cart-empty {
+            text-align: center;
+            color: #9ca3af;
+            padding: 2rem;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border: 1px solid #e5e7eb;
+        }
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cart-item-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        .cart-item-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        .cart-item-price {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.875rem;
+            padding: 0.5rem;
+        }
+        .cart-item-remove:hover {
+            text-decoration: underline;
+        }
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-top: 2px solid #e5e7eb;
+            margin-top: 1rem;
+        }
+        .cart-total-label {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        .cart-total-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #635bff 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+        .checkout-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+        .checkout-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Product Detail Section */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        .product-detail-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 6rem;
+        }
+        .product-detail-info h1 {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        .product-detail-price {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #635bff;
+            margin-bottom: 1.5rem;
+        }
+        .product-detail-desc {
+            color: #4b5563;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+        }
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            color: #374151;
+        }
+        .feature-list li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .section-divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 3rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .product-detail-image {
+                height: 250px;
+                font-size: 4rem;
+            }
+            .product-detail-info h1 {
+                font-size: 1.5rem;
+            }
+            .product-detail-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+        <div class="max-w-full px-4 md:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-xs md:text-sm font-light tracking-wide text-gray-900 no-underline">GAUSSIAN SPLAT RELIGHTING</a>
+                
+                <!-- Desktop Menu -->
+                <div class="desktop-menu space-x-6 text-sm items-center">
+                    <a href="index.html" class="nav-link whitespace-nowrap">Home</a>
+                    <a href="index.html#abstract" class="nav-link whitespace-nowrap">Abstract</a>
+                    <a href="WhyFake.html" class="nav-link whitespace-nowrap" target="_blank">Why Fake?</a>
+                    <a href="SDFSplats.html" class="nav-link whitespace-nowrap" target="_blank">SDF Splats</a>
+                    <a href="Shop.html" class="nav-shop-link whitespace-nowrap">Shop</a>
+                    <a href="#cart" class="cart-icon" id="cartIconDesktop" title="Shopping Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        <span class="cart-badge hidden" id="cartBadgeDesktop">0</span>
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu text-sm" onclick="toggleMobileMenu()">☰ Menu</button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenuDropdown" class="mobile-menu hidden mt-4 space-y-2 text-sm">
+                <a href="index.html" class="block py-2 nav-link" onclick="closeMobileMenu()">Home</a>
+                <a href="index.html#abstract" class="block py-2 nav-link" onclick="closeMobileMenu()">Abstract</a>
+                <a href="WhyFake.html" class="block py-2 nav-link" target="_blank">Why Fake?</a>
+                <a href="SDFSplats.html" class="block py-2 nav-link" target="_blank">SDF Splats</a>
+                <a href="Shop.html" class="block py-2 nav-shop-link">🛒 Shop</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="pt-28 pb-8">
+        <div class="content-width px-4 md:px-6">
+            <h1 class="text-3xl md:text-4xl mb-2">Shop</h1>
+            <p class="text-gray-600">Professional tools for 3D Gaussian Splatting development</p>
+        </div>
+    </section>
+
+    <!-- Product Detail -->
+    <section class="py-8">
+        <div class="content-width px-4 md:px-6">
+            <div class="product-detail">
+                <div class="product-detail-image">
+                    🎮
+                </div>
+                <div class="product-detail-info">
+                    <span class="text-sm text-gray-500 uppercase tracking-wider">Unity Editor Plugin</span>
+                    <h1>Gaussian Splat Editor</h1>
+                    <div class="product-detail-price">$79</div>
+                    <p class="product-detail-desc">
+                        A powerful Unity Editor plugin for editing and manipulating 3D Gaussian Splats directly within the Unity environment. 
+                        Streamline your workflow with intuitive tools for splat selection, transformation, and real-time preview with dynamic lighting.
+                    </p>
+                    
+                    <ul class="feature-list">
+                        <li>Visual splat selection and manipulation tools</li>
+                        <li>Real-time preview with fake relighting system</li>
+                        <li>Import/Export PLY and compressed splat formats</li>
+                        <li>Batch editing operations for large datasets</li>
+                        <li>Integration with Unity's lighting and camera systems</li>
+                        <li>VR-ready editing mode</li>
+                        <li>Undo/Redo support with full history</li>
+                        <li>Comprehensive documentation and sample scenes</li>
+                    </ul>
+                    
+                    <button class="add-to-cart-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 79)">
+                        Add to Cart — $79
+                    </button>
+                    
+                    <p class="text-xs text-gray-500 mt-3">
+                        Compatible with Unity 2021.3 LTS and later. Includes lifetime updates.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Cart Section -->
+    <section id="cart" class="py-8">
+        <div class="content-width px-4 md:px-6">
+            <h2 class="text-2xl md:text-3xl mb-6">Shopping Cart</h2>
+            
+            <div class="cart-section">
+                <div id="cartItems">
+                    <!-- Cart items will be rendered here -->
+                </div>
+                
+                <div id="cartEmpty" class="cart-empty">
+                    <p>Your cart is empty</p>
+                    <p class="text-sm mt-2">Add products above to get started</p>
+                </div>
+                
+                <div id="cartFooter" class="hidden">
+                    <div class="cart-total">
+                        <span class="cart-total-label">Total</span>
+                        <span class="cart-total-price" id="cartTotalPrice">$0</span>
+                    </div>
+                    
+                    <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()">
+                        Proceed to Checkout
+                    </button>
+                    
+                    <p class="text-xs text-gray-500 text-center mt-4">
+                        🔒 Secure payment processed by Stripe. You will receive your download immediately after purchase.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider content-width"></div>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center text-sm text-gray-500">
+        <div class="content-width px-4 md:px-6">
+            <p class="mb-2">Gaussian Splat Tools</p>
+            <p><a href="index.html" class="text-gray-500 hover:text-gray-700">← Back to Technical Paper</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileMenuDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function closeMobileMenu() {
+            const dropdown = document.getElementById('mobileMenuDropdown');
+            dropdown.classList.add('hidden');
+        }
+
+        // Shopping Cart functionality
+        // Configure your Stripe Payment Link with success redirect in Stripe Dashboard
+        // Or use Stripe Checkout Sessions API for more control
+        const STRIPE_CHECKOUT_URL = 'https://buy.stripe.com/dRm3co2xrdCKaxk5sU7kc00';
+        
+        function getCart() {
+            return JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+        }
+        
+        function saveCart(cart) {
+            localStorage.setItem('gsplatCart', JSON.stringify(cart));
+            updateCartUI();
+        }
+        
+        function addToCart(productId, name, price) {
+            const cart = getCart();
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                // Item already in cart
+                showNotification('Item already in cart!');
+                return;
+            }
+            
+            cart.push({
+                id: productId,
+                name: name,
+                price: price,
+                quantity: 1
+            });
+            
+            saveCart(cart);
+            showNotification('Added to cart!');
+            
+            // Update button state
+            updateAddToCartButton(productId);
+        }
+        
+        function removeFromCart(productId) {
+            let cart = getCart();
+            cart = cart.filter(item => item.id !== productId);
+            saveCart(cart);
+            
+            // Reset button state
+            resetAddToCartButton(productId);
+        }
+        
+        function updateCartUI() {
+            const cart = getCart();
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartEmpty = document.getElementById('cartEmpty');
+            const cartFooter = document.getElementById('cartFooter');
+            const cartTotalPrice = document.getElementById('cartTotalPrice');
+            
+            // Update badge
+            updateCartBadge();
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                cartEmpty.classList.remove('hidden');
+                cartFooter.classList.add('hidden');
+                return;
+            }
+            
+            cartEmpty.classList.add('hidden');
+            cartFooter.classList.remove('hidden');
+            
+            let html = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-icon">🎮</div>
+                            <div>
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">$${item.price}</div>
+                            </div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Remove</button>
+                    </div>
+                `;
+            });
+            
+            cartItemsContainer.innerHTML = html;
+            cartTotalPrice.textContent = '$' + total;
+            
+            // Update add to cart buttons
+            cart.forEach(item => {
+                updateAddToCartButton(item.id);
+            });
+        }
+        
+        function updateCartBadge() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badges = document.querySelectorAll('.cart-badge');
+            badges.forEach(badge => {
+                if (totalItems > 0) {
+                    badge.textContent = totalItems;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+        }
+        
+        function updateAddToCartButton(productId) {
+            const btn = document.getElementById('addToCartBtn');
+            if (btn && productId === 'unity-gsplat-editor') {
+                btn.textContent = '✓ Added to Cart';
+                btn.disabled = true;
+            }
+        }
+        
+        function resetAddToCartButton(productId) {
+            const btn = document.getElementById('addToCartBtn');
+            if (btn && productId === 'unity-gsplat-editor') {
+                btn.textContent = 'Add to Cart — $79';
+                btn.disabled = false;
+            }
+        }
+        
+        function proceedToCheckout() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                showNotification('Your cart is empty!');
+                return;
+            }
+            
+            // Redirect to Stripe checkout
+            window.location.href = STRIPE_CHECKOUT_URL;
+        }
+        
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #1f2937;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+        
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartUI();
+            
+            // Check if item is already in cart and update button
+            const cart = getCart();
+            if (cart.find(item => item.id === 'unity-gsplat-editor')) {
+                updateAddToCartButton('unity-gsplat-editor');
+            }
+            
+            // Scroll to cart if hash is #cart
+            if (window.location.hash === '#cart') {
+                setTimeout(() => {
+                    document.getElementById('cart').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>
+
