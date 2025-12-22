@@ -56,6 +56,38 @@
         .nav-links a:hover {
             text-decoration: underline;
         }
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #000;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+        }
+        .cart-link:hover {
+            background: #000;
+            color: #fff;
+            text-decoration: none !important;
+        }
+        .cart-count {
+            background: #000;
+            color: #fff;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+        }
+        .cart-link:hover .cart-count {
+            background: #fff;
+            color: #000;
+        }
+        .cart-count.hidden {
+            display: none;
+        }
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -328,6 +360,9 @@
                 <a href="Shop.html">Shop</a>
                 <a href="index.html#articles">Articles</a>
                 <a href="about.html">About</a>
+                <a href="Shop.html#cart" class="cart-link">
+                    Cart <span class="cart-count hidden" id="cartBadge">0</span>
+                </a>
             </div>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Menu</button>
         </div>
@@ -336,6 +371,7 @@
             <a href="Shop.html">Shop</a>
             <a href="index.html#articles">Articles</a>
             <a href="about.html">About</a>
+            <a href="Shop.html#cart">Cart</a>
         </div>
     </nav>
 
@@ -502,6 +538,22 @@
         function toggleMobileMenu() {
             document.getElementById('mobileNav').classList.toggle('active');
         }
+        
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 </body>
 </html>
