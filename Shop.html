@@ -126,58 +126,61 @@
         
         /* Product Section */
         .product-section {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 2.5rem 2rem;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2.5rem;
+            background: #fff;
+            align-items: start;
         }
         .product-image {
-            aspect-ratio: 1;
+            height: 220px;
             background: #f5f5f5;
             border: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6rem;
+            font-size: 4rem;
             color: #ccc;
         }
         .product-info h2 {
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: #999;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
         .product-info h3 {
-            font-size: 2rem;
+            font-size: 1.4rem;
             font-weight: 400;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
         .product-price {
             font-family: 'Space Mono', monospace;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
         .product-desc {
             color: #555;
-            margin-bottom: 2rem;
-            line-height: 1.8;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
         .feature-list {
             list-style: none;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             border-top: 1px solid #eee;
         }
         .feature-list li {
-            padding: 0.75rem 0;
+            padding: 0.4rem 0;
             border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            font-size: 0.9rem;
+            gap: 0.75rem;
+            font-size: 0.8rem;
         }
         .feature-list li::before {
             content: '→';
@@ -186,12 +189,12 @@
         .add-btn {
             display: block;
             width: 100%;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             background: #000;
             color: #fff;
             border: none;
             font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 0.05em;
             cursor: pointer;
             transition: all 0.2s;
@@ -204,8 +207,8 @@
             cursor: default;
         }
         .product-meta {
-            margin-top: 1rem;
-            font-size: 0.75rem;
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
             color: #999;
             font-family: 'Space Mono', monospace;
         }
@@ -366,11 +369,11 @@
             }
             .product-section {
                 grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 2rem;
+                gap: 1.5rem;
+                padding: 1.5rem;
             }
             .product-image {
-                height: 300px;
+                height: 180px;
             }
         }
     </style>
@@ -402,7 +405,7 @@
 
     <!-- Product: VHS VR Effects -->
     <section class="product-section">
-        <div class="product-image" style="background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); color: #ff6b9d; font-size: 4rem; text-shadow: 0 0 20px #ff6b9d, 0 0 40px #c44569;">▦</div>
+        <div class="product-image" style="background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); color: #ff6b9d; text-shadow: 0 0 20px #ff6b9d, 0 0 40px #c44569;">▦</div>
         <div class="product-info">
             <h2>Unity VR Post-Processing</h2>
             <h3>VHS 1980 VR Effects</h3>
@@ -425,7 +428,7 @@
             <button class="add-btn" id="addVhsBtn" onclick="addToCart('vhs-vr-effects', 'VHS 1980 VR Effects', 36)">
                 Add to Cart — $36
             </button>
-            <p class="product-meta">Unity 2021.3 LTS+ · VR Ready · Lifetime updates</p>
+            <p class="product-meta">Unity 6.x LTS+ · URP for VR · Lifetime updates</p>
         </div>
     </section>
 
