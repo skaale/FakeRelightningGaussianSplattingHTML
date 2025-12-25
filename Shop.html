@@ -484,7 +484,8 @@
     </footer>
 
     <script>
-        const STRIPE_CHECKOUT_URL = 'https://buy.stripe.com/dRm3co2xrdCKaxk5sU7kc00';
+        const STRIPE_VHS_URL = 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01';
+        const STRIPE_GSPLAT_URL = 'https://buy.stripe.com/dRm3co2xrdCKaxk5sU7kc00';
         
         function getCart() {
             return JSON.parse(localStorage.getItem('gsplatCart') || '[]');
@@ -600,8 +601,20 @@
         }
         
         function proceedToCheckout() {
-            if (getCart().length === 0) return;
-            window.location.href = STRIPE_CHECKOUT_URL;
+            const cart = getCart();
+            if (cart.length === 0) return;
+            
+            // For single product, go directly to that product's checkout
+            if (cart.length === 1) {
+                if (cart[0].id === 'vhs-vr-effects') {
+                    window.location.href = STRIPE_VHS_URL;
+                } else if (cart[0].id === 'unity-gsplat-editor') {
+                    window.location.href = STRIPE_GSPLAT_URL;
+                }
+            } else {
+                // Multiple products - for now redirect to VHS (primary product)
+                window.location.href = STRIPE_VHS_URL;
+            }
         }
         
         function showNotification(msg) {
