@@ -135,6 +135,11 @@
             background: #fff;
             align-items: start;
         }
+        .product-media {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
         .product-image {
             height: 220px;
             background: #f5f5f5;
@@ -144,6 +149,11 @@
             justify-content: center;
             font-size: 4rem;
             color: #ccc;
+        }
+        .product-video {
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            background: #000;
         }
         .product-info h2 {
             font-family: 'Space Mono', monospace;
@@ -405,7 +415,13 @@
 
     <!-- Product: VHS VR Effects -->
     <section class="product-section">
-        <div class="product-image" style="background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); color: #ff6b9d; text-shadow: 0 0 20px #ff6b9d, 0 0 40px #c44569;">▦</div>
+        <div class="product-media">
+            <div class="product-image" style="background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); color: #ff6b9d; text-shadow: 0 0 20px #ff6b9d, 0 0 40px #c44569;">▦</div>
+            <video class="product-video" controls muted loop>
+                <source src="vhs-demo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
         <div class="product-info">
             <h2>Unity VR Post-Processing</h2>
             <h3>VHS 1980 VR Effects</h3>
