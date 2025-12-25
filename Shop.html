@@ -133,12 +133,14 @@
             grid-template-columns: 1fr 1.2fr;
             gap: 2.5rem;
             background: #fff;
-            align-items: start;
+            align-items: end;
         }
         .product-media {
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            justify-content: flex-end;
+            height: 100%;
         }
         .product-image {
             height: 220px;
@@ -450,7 +452,13 @@
 
     <!-- Product: Gaussian Splat Editor -->
     <section class="product-section" style="border-top: 1px solid #e0e0e0;">
-        <div class="product-image">◇</div>
+        <div class="product-media">
+            <div class="product-image">◇</div>
+            <video class="product-video" controls muted loop>
+                <source src="gsplat-demo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
         <div class="product-info">
             <h2>Unity Editor Plugin</h2>
             <h3>Gaussian Splat Editor</h3>
