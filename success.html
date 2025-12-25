@@ -132,15 +132,24 @@
             color: #999;
         }
         
-        .email-box {
-            background: #f9f9f9;
-            border: 1px solid #000;
+        .download-box {
+            background: #f0fff0;
+            border: 2px solid #000;
         }
-        .email-box h3 {
-            color: #000;
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: background 0.2s;
         }
-        .email-box p {
-            color: #333;
+        .download-btn:hover {
+            background: #333;
         }
         
         .back-link {
@@ -197,22 +206,22 @@
         <div class="success-card">
             <div class="success-icon">✓</div>
             <h1>Thank You</h1>
-            <p>Your payment was successful. Check your email for the download link.</p>
+            <p>Your payment was successful. Download your files below.</p>
             
-            <div class="info-box email-box">
-                <h3>Check Your Email</h3>
-                <p>
-                    Stripe has sent a download link to your email address. 
-                    Check your inbox (and spam folder) for an email containing your files.
-                </p>
+            <div class="info-box download-box">
+                <h3>Download Your Files</h3>
+                <p style="margin-bottom: 1rem;">Click below to download your VHS 1980 VR Effects package.</p>
+                <a href="YOUR_RAR_FILE_URL_HERE" class="download-btn" download>
+                    ↓ Download VHS_1980_VR_Effects.rar
+                </a>
             </div>
             
             <div class="info-box">
                 <h3>What's Included</h3>
                 <ul>
-                    <li>GaussianSplatEditor.unitypackage</li>
-                    <li>Documentation (PDF)</li>
-                    <li>Sample scenes and assets</li>
+                    <li>VHS_1980_VR_Effects.unitypackage</li>
+                    <li>5 Movie presets (Blade Runner, Terminator, etc.)</li>
+                    <li>Documentation & setup guide</li>
                     <li>License file</li>
                 </ul>
             </div>
@@ -220,9 +229,9 @@
             <div class="info-box">
                 <h3>Need Help?</h3>
                 <ul>
-                    <li>Didn't receive the email? Check spam folder</li>
-                    <li>Download links valid for 30 days</li>
-                    <li>Contact support with your order number</li>
+                    <li>Save this page or bookmark it</li>
+                    <li>Receipt sent to your email</li>
+                    <li>Contact support for any issues</li>
                 </ul>
             </div>
             
