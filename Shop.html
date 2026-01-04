@@ -103,6 +103,22 @@
             font-size: 0.75rem;
             cursor: pointer;
         }
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            margin-top: 1rem;
+        }
+        .mobile-nav.active {
+            display: flex;
+        }
+        .mobile-nav a {
+            font-size: 0.9rem;
+            color: #000;
+            text-decoration: none;
+        }
         
         /* Hero */
         .hero {
@@ -409,6 +425,13 @@
             </div>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Menu</button>
         </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="index.html">Home</a>
+            <a href="index.html#articles">Articles</a>
+            <a href="SPAG.html">SPAG</a>
+            <a href="about.html">About</a>
+            <a href="#cart">Cart</a>
+        </div>
     </nav>
 
     <!-- Hero -->
@@ -657,8 +680,7 @@
         }
         
         function toggleMobileMenu() {
-            const links = document.querySelector('.nav-links');
-            links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+            document.getElementById('mobileNav').classList.toggle('active');
         }
         
         document.addEventListener('DOMContentLoaded', () => {
