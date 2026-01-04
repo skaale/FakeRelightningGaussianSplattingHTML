@@ -596,14 +596,9 @@
             let total = 0;
             cart.forEach(item => {
                 total += item.price;
-                const icon = item.id === 'vhs-vr-effects' ? '▦' : '◇';
-                const iconStyle = item.id === 'vhs-vr-effects' 
-                    ? 'background: linear-gradient(135deg, #1a0a2e, #0f3460); color: #ff6b9d;' 
-                    : '';
                 html += `
                     <div class="cart-item">
                         <div class="cart-item-info">
-                            <div class="cart-item-icon" style="${iconStyle}">${icon}</div>
                             <div>
                                 <div class="cart-item-name">${item.name}</div>
                                 <div class="cart-item-price">$${item.price}</div>
