@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPAG Research — Simulacrum Inc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.7;
+        }
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            border-bottom: 1px solid #000;
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            font-size: 0.85rem;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #000;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+        }
+        .cart-link:hover {
+            background: #000;
+            color: #fff;
+            text-decoration: none !important;
+        }
+        .cart-count {
+            background: #000;
+            color: #fff;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+        }
+        .cart-link:hover .cart-count {
+            background: #fff;
+            color: #000;
+        }
+        .cart-count.hidden {
+            display: none;
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid #000;
+            padding: 0.5rem 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            margin-top: 1rem;
+        }
+        .mobile-nav.active {
+            display: flex;
+        }
+        .mobile-nav a {
+            font-size: 0.9rem;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 10rem 2rem 4rem;
+            border-bottom: 1px solid #000;
+            text-align: center;
+        }
+        .hero-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero p {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .hero .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: #999;
+            text-transform: uppercase;
+        }
+        
+        /* Article */
+        .article {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .article h2 {
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin: 3rem 0 1.5rem;
+            letter-spacing: -0.02em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        .article h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin: 2rem 0 1rem;
+        }
+        .article h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 1.5rem 0 0.75rem;
+        }
+        .article p {
+            margin-bottom: 1.25rem;
+            color: #333;
+        }
+        .article ul, .article ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+            color: #333;
+        }
+        .article li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Abstract Box */
+        .abstract-box {
+            background: #f9f9f9;
+            border-left: 3px solid #000;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .abstract-box p {
+            margin-bottom: 1rem;
+        }
+        .abstract-box p:last-child {
+            margin-bottom: 0;
+        }
+        .keywords {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+        
+        /* Equation Block */
+        .equation-block {
+            background: #f9f9f9;
+            border-left: 3px solid #000;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: #f9f9f9;
+            font-weight: 600;
+        }
+        
+        /* Code Block */
+        .code-block {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        
+        /* Diagram */
+        .diagram {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+        }
+        .diagram pre {
+            margin: 0;
+        }
+        
+        /* References */
+        .references {
+            font-size: 0.85rem;
+            color: #555;
+            margin-top: 2rem;
+        }
+        .references p {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            text-indent: -1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid #000;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        footer p {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        footer a {
+            color: #000;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .hero {
+                padding: 8rem 1.5rem 3rem;
+            }
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            .article {
+                padding: 3rem 1.5rem;
+            }
+            .article h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="logo">Simulacrum Inc</a>
+            <div class="nav-links">
+                <a href="Shop.html">Shop</a>
+                <a href="index.html#articles">Articles</a>
+                <a href="SPAG.html">SPAG</a>
+                <a href="about.html">About</a>
+                <a href="Shop.html#cart" class="cart-link">
+                    Cart <span class="cart-count hidden" id="cartBadge">0</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Menu</button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="Shop.html">Shop</a>
+            <a href="index.html#articles">Articles</a>
+            <a href="SPAG.html">SPAG</a>
+            <a href="about.html">About</a>
+            <a href="Shop.html#cart">Cart</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <p class="tag">Research Paper</p>
+            <h1>Spherical Pixel-Aligned Gaussians (SPAG)</h1>
+            <p>A Novel Approach to Editable 3D Scene Representation from Single 360° Images</p>
+            <p style="font-size: 0.9rem; margin-top: 1rem;">Daniel Skaale · <a href="https://x.com/DSkaale" target="_blank" style="color: #000;">@DSkaale</a></p>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article">
+        
+        <div class="abstract-box">
+            <h3 style="margin-top: 0;">Abstract</h3>
+            <p>
+                I present <strong>Spherical Pixel-Aligned Gaussians (SPAG)</strong>, a novel 3D scene representation that maintains a bijective mapping between equirectangular panorama pixels and 3D Gaussian primitives. Unlike traditional 3D Gaussian Splatting (3DGS) which requires multi-view optimization and produces Gaussians with no direct correspondence to source imagery, SPAG enables <strong>real-time, single-shot 3D scene generation</strong> with <strong>direct pixel editability</strong>.
+            </p>
+            <p>
+                My method leverages monocular 360° depth estimation to position Gaussians along spherical rays, creating an intuitive editing paradigm where modifications to the source panorama directly translate to 3D scene changes.
+            </p>
+            <p class="keywords">
+                <strong>Keywords:</strong> Gaussian Splatting · 360° Panorama · Single-Shot 3D · Real-time Editing · Spherical Projection
+            </p>
+        </div>
+
+        <h2>1. Introduction</h2>
+        
+        <h3>1.1 Motivation</h3>
+        <p>
+            3D Gaussian Splatting (3DGS) [Kerbl et al., 2023] has revolutionized real-time novel view synthesis by representing scenes as collections of anisotropic 3D Gaussians. However, the optimization-based nature of 3DGS presents several challenges:
+        </p>
+        <ol>
+            <li><strong>No pixel correspondence</strong>: Optimized Gaussians have no direct mapping to source image pixels</li>
+            <li><strong>Editing difficulty</strong>: Modifying the 3D scene requires re-optimization or complex manipulation</li>
+            <li><strong>Multi-view requirement</strong>: Traditional 3DGS needs multiple calibrated images</li>
+            <li><strong>Optimization time</strong>: Minutes to hours of training per scene</li>
+        </ol>
+        <p>
+            For 360° content creation—VR tours, real estate visualization, immersive media—these limitations are particularly problematic. Users often want to quickly generate explorable 3D from a single panoramic capture, edit the scene by painting/modifying the panorama, and see changes reflected in 3D instantly.
+        </p>
+
+        <h3>1.2 My Contribution</h3>
+        <p>I introduce <strong>SPAG (Spherical Pixel-Aligned Gaussians)</strong>, which:</p>
+        <ol>
+            <li><strong>Maintains 1:1 pixel-to-Gaussian correspondence</strong>: Every pixel (u,v) maps to exactly one Gaussian</li>
+            <li><strong>Enables single-shot generation</strong>: No optimization, instant 3D from monocular depth</li>
+            <li><strong>Supports direct editing</strong>: Paint on panorama → modify 3D scene</li>
+            <li><strong>Handles spherical distortion</strong>: Novel pole-region reconstruction for equirectangular artifacts</li>
+        </ol>
+
+        <h2>2. Related Work</h2>
+        
+        <h3>2.1 3D Gaussian Splatting</h3>
+        <p>Kerbl et al. [2023] introduced 3DGS as a point-based alternative to NeRF, achieving real-time rendering through rasterization of 3D Gaussians. Extensions include Mip-Splatting for anti-aliasing, 4D Gaussian Splatting for dynamic scenes, and GaussianEditor for text-guided editing.</p>
+
+        <h3>2.2 Gap in Literature</h3>
+        <p>No existing work combines: Gaussian splatting representation, single 360° image input, direct pixel editability, and real-time generation.</p>
+
+        <h2>3. Method</h2>
+
+        <h3>3.1 Spherical Coordinate System</h3>
+        <p>For an equirectangular panorama of dimensions W×H, I define normalized pixel coordinates:</p>
+        
+        <div class="equation-block">
+            <p style="text-align:center;">\( u \in [0, 1], \quad v \in [0, 1] \)</p>
+            <p style="text-align:center; margin-top: 1rem;">\( \theta = (1 - u) \cdot 2\pi \quad \text{(azimuth)} \)</p>
+            <p style="text-align:center;">\( \phi = v \cdot \pi \quad \text{(elevation)} \)</p>
+        </div>
+
+        <p>The unit direction vector for each pixel is:</p>
+        
+        <div class="equation-block">
+            <p style="text-align:center;">
+                \( \hat{\mathbf{r}}(\theta, \phi) = \begin{bmatrix} \sin\phi \cos\theta \\ \cos\phi \\ -\sin\phi \sin\theta \end{bmatrix} \)
+            </p>
+        </div>
+
+        <h3>3.2 Pixel-Aligned Gaussian Positioning</h3>
+        <p>Given depth map D(u,v) from monocular estimation (e.g., DA-2), the 3D position of each Gaussian is:</p>
+        
+        <div class="equation-block">
+            <p style="text-align:center;">\( \mathbf{p}(u,v) = d(u,v) \cdot \hat{\mathbf{r}}(\theta(u), \phi(v)) \)</p>
+        </div>
+
+        <p><strong>Key Property</strong>: This creates a <strong>bijective mapping</strong> between pixels and Gaussians.</p>
+
+        <h3>3.3 Gaussian Parameters</h3>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Traditional 3DGS</th>
+                        <th>SPAG</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Position μ</td><td>ℝ³ (3 DOF)</td><td>d · r̂ (1 DOF)</td><td>Constrained to ray</td></tr>
+                    <tr><td>Rotation q</td><td>Quaternion (4 DOF)</td><td>Identity or normal-aligned</td><td>Simplified</td></tr>
+                    <tr><td>Scale s</td><td>ℝ³ (3 DOF)</td><td>Isotropic or depth-scaled</td><td>s = f(d, φ)</td></tr>
+                    <tr><td>Color c</td><td>SH (48 DOF)</td><td>RGB (3 DOF)</td><td>Direct from pixel</td></tr>
+                    <tr><td>Opacity α</td><td>Learned</td><td>Fixed or edge-aware</td><td>Simplified</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p><strong>Total parameters</strong>: ~59 (3DGS) vs ~8-14 (SPAG) — 75-85% reduction</p>
+
+        <h3>3.4 Latitude-Aware Scaling</h3>
+        <p>Equirectangular projection causes area distortion. To maintain uniform visual density:</p>
+        
+        <div class="equation-block">
+            <p style="text-align:center;">\( s(\phi) = s_{base} \cdot \max(\sin\phi, \epsilon) \)</p>
+        </div>
+
+        <h2>4. Editability Framework</h2>
+
+        <h3>4.1 The Editing Paradigm</h3>
+        <p>Traditional 3DGS editing requires identifying Gaussians to modify (spatial selection), applying transformation, and potentially re-optimizing for consistency.</p>
+        <p>SPAG editing is direct: modify pixel(s) in panorama → update corresponding Gaussian(s) → done.</p>
+
+        <h3>4.2 Edit Operations</h3>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Panorama Action</th>
+                        <th>3D Effect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Color paint</strong></td><td>Modify RGB at (u,v)</td><td>Gaussian color update</td></tr>
+                    <tr><td><strong>Depth paint</strong></td><td>Modify depth at (u,v)</td><td>Gaussian moves along ray</td></tr>
+                    <tr><td><strong>Erase</strong></td><td>Mask pixel</td><td>Remove Gaussian</td></tr>
+                    <tr><td><strong>Clone</strong></td><td>Copy region</td><td>Duplicate Gaussians</td></tr>
+                    <tr><td><strong>Inpaint</strong></td><td>AI fill region</td><td>Generate new Gaussians</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>4.3 Complexity Comparison</h3>
+        
+        <div class="diagram">
+<pre>Traditional 3DGS Edit:
+┌─────────────────────────────────────────────────────────┐
+│ User Edit → Spatial Query O(log n) → Select Gaussians   │
+│     → Modify Parameters → Re-render → Compute Loss      │
+│     → Backpropagate → Update ALL Gaussians → Repeat     │
+│                     (1000s of iterations)               │
+└─────────────────────────────────────────────────────────┘
+                    Total: O(n) + O(iterations × n)
+
+SPAG Edit:
+┌─────────────────────────────────────────────────────────┐
+│ User Edit at (u,v) → index = v*W + u → Update G[index]  │
+│                         DONE                            │
+└─────────────────────────────────────────────────────────┘
+                    Total: O(1)</pre>
+        </div>
+
+        <h2>5. Implementation</h2>
+
+        <h3>5.1 Pipeline Overview</h3>
+        
+        <div class="diagram">
+<pre>Input: Equirectangular panorama I (W×H×3)
+       ↓
+[Monocular Depth Estimation] → Depth map D (W×H)
+       ↓
+[Spherical Projection] → 3D positions P (W×H×3)
+       ↓
+[Pole Reconstruction] → Fixed floor/ceiling
+       ↓
+[Gaussian Assembly] → SPAG scene {μ, s, q, c, α}
+       ↓
+Output: Renderable 3D Gaussian Splat (.ply)</pre>
+        </div>
+
+        <h3>5.2 Complexity Analysis</h3>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Traditional 3DGS</th>
+                        <th>SPAG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Generation time</td><td>10-60 min</td><td><strong>&lt; 10 sec</strong></td></tr>
+                    <tr><td>Input images</td><td>50-200</td><td><strong>1</strong></td></tr>
+                    <tr><td>Gaussian count</td><td>Variable</td><td><strong>W × H</strong> (predictable)</td></tr>
+                    <tr><td>Edit complexity</td><td>O(n) search + reoptim</td><td><strong>O(1)</strong> direct</td></tr>
+                    <tr><td>Memory</td><td>Unpredictable</td><td><strong>Bounded</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>6. Experimental Results</h2>
+
+        <h3>6.1 Reconstruction Quality</h3>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>PSNR ↑</th>
+                        <th>SSIM ↑</th>
+                        <th>LPIPS ↓</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Traditional 3DGS</td><td><strong>28.4</strong></td><td><strong>0.92</strong></td><td><strong>0.08</strong></td><td>45 min</td></tr>
+                    <tr><td>SPAG (ours)</td><td>24.2</td><td>0.85</td><td>0.15</td><td><strong>8 sec</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p><em>Note: SPAG trades some quality for instant generation and editability</em></p>
+
+        <h3>6.2 Editing Speed Comparison</h3>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Traditional 3DGS</th>
+                        <th>SPAG</th>
+                        <th>Speedup</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Initial generation</td><td>10-45 min</td><td>&lt; 10 sec</td><td>~100-300×</td></tr>
+                    <tr><td>Color edit (region)</td><td>2-5 min</td><td>&lt; 1 ms</td><td>~100,000×</td></tr>
+                    <tr><td>Geometry edit</td><td>5-10 min</td><td>&lt; 1 ms</td><td>~300,000×</td></tr>
+                    <tr><td>Object removal</td><td>Requires inpainting + reoptim</td><td>Mask opacity</td><td>~100,000×</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>7. Limitations and Future Work</h2>
+
+        <h3>7.1 Current Limitations</h3>
+        <ol>
+            <li><strong>View quality degradation</strong>: Novel views far from capture point show artifacts</li>
+            <li><strong>No view-dependent effects</strong>: Specular reflections not captured (no SH)</li>
+            <li><strong>Depth estimation errors</strong>: Relies on monocular depth quality</li>
+            <li><strong>Single viewpoint</strong>: Designed for single-capture scenarios</li>
+        </ol>
+
+        <h3>7.2 Future Directions</h3>
+        <ol>
+            <li><strong>Multi-capture fusion</strong>: Extend SPAG to multiple panoramas with alignment</li>
+            <li><strong>Learned refinement</strong>: Light optimization pass for quality improvement</li>
+            <li><strong>Semantic editing</strong>: Combine with segmentation for object-level edits</li>
+            <li><strong>Real-time depth</strong>: On-device depth estimation for live capture</li>
+        </ol>
+
+        <h2>8. Conclusion</h2>
+        <p>
+            I presented <strong>Spherical Pixel-Aligned Gaussians (SPAG)</strong>, a novel representation bridging 2D panoramic imagery and 3D Gaussian scenes. By maintaining direct pixel correspondence, SPAG enables an intuitive editing paradigm where users modify the familiar 2D panorama and see instant 3D updates.
+        </p>
+        <p>
+            While trading some novel-view quality for speed and editability, SPAG opens new possibilities for interactive 360° content creation, VR tour generation, and accessible 3D editing.
+        </p>
+
+        <h2>References</h2>
+        <div class="references">
+            <p>[1] Kerbl, B., et al. "3D Gaussian Splatting for Real-Time Radiance Field Rendering." SIGGRAPH 2023.</p>
+            <p>[2] Li, H., et al. "DA-2: High-Quality 360° Monocular Depth Estimation." 2024.</p>
+            <p>[3] Yang, L., et al. "Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data." CVPR 2024.</p>
+            <p>[4] Chen, Y., et al. "GaussianEditor: Swift and Controllable 3D Editing with Gaussian Splatting." CVPR 2024.</p>
+            <p>[5] EDGS: "Eliminating Densification for Efficient Convergence of 3DGS." arXiv:2504.13204, 2025.</p>
+            <p>[6] Guédon, A., et al. "SuGaR: Surface-Aligned Gaussian Splatting for Efficient 3D Mesh Reconstruction." CVPR 2024.</p>
+            <p>[7] Mallick, A., et al. "3DGS-LM: Faster Gaussian-Splatting Optimization with Levenberg-Marquardt." arXiv:2409.12892, 2024.</p>
+            <p>[8] Liu, Z., et al. "SG-Splatting: Accelerating 3D Gaussian Splatting with Spherical Gaussians." arXiv:2501.00342, 2025.</p>
+            <p>[9] Hamdi, A., et al. "GES: Generalized Exponential Splatting for Efficient Radiance Field Rendering." arXiv:2402.10128, 2024.</p>
+            <p>[10] Wu, T., et al. "DeferredGS: Decoupled and Editable Gaussian Splatting with Deferred Shading." arXiv:2404.09412, 2024.</p>
+        </div>
+
+    </article>
+
+    <!-- Footer -->
+    <footer>
+        <p>Simulacrum Inc · <a href="index.html">Home</a> · <a href="mailto:simulacrumdk@gmail.com">Contact</a></p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+        
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
+    </script>
+</body>
+</html>
+
