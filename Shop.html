@@ -489,7 +489,7 @@
         <div class="product-info">
             <h2>Unity Editor Plugin</h2>
             <h3>Gaussian Splat Editor</h3>
-            <div class="product-price">$2</div>
+            <div class="product-price">$79</div>
             <p class="product-desc">
                 A powerful Unity Editor plugin for editing and manipulating 3D Gaussian Splats 
                 directly within Unity. Intuitive tools for splat selection, transformation, 
@@ -505,8 +505,8 @@
                 <li>Undo/Redo with full history</li>
                 <li>Documentation & sample scenes</li>
             </ul>
-            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 2)">
-                Add to Cart — $2
+            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 79)">
+                Add to Cart — $79
             </button>
             <p class="product-meta">Unity 2021.3 LTS+ · Lifetime updates</p>
         </div>
@@ -605,10 +605,67 @@
     </footer>
 
     <script>
-        const STRIPE_VHS_URL = 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01';
-        const STRIPE_GSPLAT_URL = 'https://buy.stripe.com/dRm3co2xrdCKaxk5sU7kc00';
-        const STRIPE_RELIGHTING_URL = 'https://buy.stripe.com/placeholder-relighting';
-        const STRIPE_WORLDLABS_URL = 'https://buy.stripe.com/placeholder-worldlabs';
+        // Stripe Payment Links - Replace with your actual Stripe Payment Link URLs
+        // 
+        // To set up Stripe Payment Links:
+        // 1. Go to Stripe Dashboard > Products > Payment Links
+        // 2. Create a new Payment Link for each product:
+        //    - Gaussian Splat Editor: $2
+        //    - Gaussian Splatting Re-Lightning: $299
+        //    - Worldlabs Unity API: $25
+        // 3. Set Success URL to: https://simulacrum.dk/success.html?product={PRODUCT_ID}
+        // 4. Copy the Payment Link URL and paste it below
+        //
+        const STRIPE_PAYMENT_LINKS = {
+            'vhs-vr-effects': 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01',
+            'unity-gsplat-editor': 'https://buy.stripe.com/14A4gseg9fKS5d0bRi7kc06',
+            'gaussian-relighting': 'https://buy.stripe.com/eVq28k0pj8iq5d04oQ7kc04',
+            'worldlabs-api': 'https://buy.stripe.com/28EfZa1tn1U25d09Ja7kc05'
+        };
+        
+        // Product download mapping
+        const PRODUCT_DOWNLOADS = {
+            'vhs-vr-effects': {
+                file: 'Products/1980VREffects/VHSWorld.zip',
+                name: 'VHSWorld.zip',
+                items: [
+                    'VHS_1980_VR_Effects.unitypackage',
+                    '5 Movie presets (Blade Runner, Terminator, etc.)',
+                    'Documentation & setup guide',
+                    'License file'
+                ]
+            },
+            'unity-gsplat-editor': {
+                file: 'Products/GaussianSplatEditor/GaussianSplatEditor.zip', // TODO: Update path when file exists
+                name: 'GaussianSplatEditor.zip',
+                items: [
+                    'Gaussian Splat Editor.unitypackage',
+                    'Sample scenes',
+                    'Documentation & API reference',
+                    'License file'
+                ]
+            },
+            'gaussian-relighting': {
+                file: 'Products/Relighting/Relighting.zip', // TODO: Update path when file exists
+                name: 'Relighting.zip',
+                items: [
+                    'Gaussian Splatting Re-Lightning.unitypackage',
+                    'Shader files',
+                    'Documentation & examples',
+                    'License file'
+                ]
+            },
+            'worldlabs-api': {
+                file: 'Products/WorldlabsAPI/WorldlabsAPI.zip', // TODO: Update path when file exists
+                name: 'WorldlabsAPI.zip',
+                items: [
+                    'Worldlabs Unity API.unitypackage',
+                    'API documentation',
+                    'Sample integration code',
+                    'License file'
+                ]
+            }
+        };
         
         function getCart() {
             return JSON.parse(localStorage.getItem('gsplatCart') || '[]');
@@ -718,7 +775,7 @@
             if (productId === 'unity-gsplat-editor') {
                 const btn = document.getElementById('addToCartBtn');
                 if (btn) {
-                    btn.textContent = 'Add to Cart — $2';
+                    btn.textContent = 'Add to Cart — $79';
                     btn.disabled = false;
                 }
             } else if (productId === 'vhs-vr-effects') {
@@ -746,21 +803,34 @@
             const cart = getCart();
             if (cart.length === 0) return;
             
+            // Store cart in sessionStorage for success page
+            sessionStorage.setItem('pendingPurchase', JSON.stringify(cart));
+            
             // For single product, go directly to that product's checkout
             if (cart.length === 1) {
                 const productId = cart[0].id;
-                if (productId === 'vhs-vr-effects') {
-                    window.location.href = STRIPE_VHS_URL;
-                } else if (productId === 'unity-gsplat-editor') {
-                    window.location.href = STRIPE_GSPLAT_URL;
-                } else if (productId === 'gaussian-relighting') {
-                    window.location.href = STRIPE_RELIGHTING_URL;
-                } else if (productId === 'worldlabs-api') {
-                    window.location.href = STRIPE_WORLDLABS_URL;
+                const stripeUrl = STRIPE_PAYMENT_LINKS[productId];
+                
+                if (stripeUrl && stripeUrl.includes('placeholder')) {
+                    alert('Payment link not configured. Please contact support.');
+                    return;
+                }
+                
+                if (stripeUrl) {
+                    // Add success URL parameter to redirect back after payment
+                    const successUrl = encodeURIComponent(window.location.origin + '/success.html?product=' + productId);
+                    window.location.href = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + 'success_url=' + successUrl;
+                } else {
+                    alert('Payment link not found for this product. Please contact support.');
                 }
             } else {
-                // Multiple products - for now redirect to VHS (primary product)
-                window.location.href = STRIPE_VHS_URL;
+                // Multiple products - redirect to first product (or implement multi-product checkout)
+                const productId = cart[0].id;
+                const stripeUrl = STRIPE_PAYMENT_LINKS[productId];
+                if (stripeUrl) {
+                    const successUrl = encodeURIComponent(window.location.origin + '/success.html?products=' + cart.map(p => p.id).join(','));
+                    window.location.href = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + 'success_url=' + successUrl;
+                }
             }
         }
         
