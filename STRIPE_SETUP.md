@@ -23,7 +23,7 @@
 - **Payment Link**: `https://buy.stripe.com/eVq28k0pj8iq5d04oQ7kc04` ✅ Configured
 
 #### Product 3: Worldlabs Unity API ✅
-- **Price**: $25.00 USD
+- **Price**: $29.00 USD
 - **Product Name**: Worldlabs Unity API
 - **Description**: Comprehensive Unity API integration for Worldlabs platform
 - **Success URL**: `https://simulacrum.dk/success.html?product=worldlabs-api`
