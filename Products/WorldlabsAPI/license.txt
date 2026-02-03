@@ -1,0 +1,58 @@
+Worldlabs API Effects - License
+==============================
+
+Copyright (c) 2025 Simulacrum Inc / Daniel Skaale
+All rights reserved.
+
+LICENSE TERMS
+-------------
+This software is licensed for use in personal and commercial projects.
+You may use this package in unlimited projects.
+You may NOT redistribute, resell, or share the source code.
+
+THIRD-PARTY CREDITS & ATTRIBUTIONS
+----------------------------------
+This package includes effects and techniques adapted from open source 
+shaders available on Shadertoy (https://www.shadertoy.com/).
+
+Shadertoy shaders are typically released under the MIT License or 
+Creative Commons licenses by their original authors. The following 
+effects were inspired by or adapted from Shadertoy contributions:
+
+- VHS tape distortion effects
+- CRT scanline simulations
+- Chroma aberration and color bleeding
+- Film grain and noise patterns
+- Analog signal interference effects
+
+We acknowledge and thank the Shadertoy community for their contributions
+to real-time graphics research and open source shader development.
+
+SHADERTOY LICENSE REFERENCE
+---------------------------
+Many Shadertoy shaders are released under the MIT License:
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files, to deal
+in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+DISCLAIMER
+----------
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+SUPPORT
+-------
+For questions or support: simulacrumdk@gmail.com
+Website: https://www.simulacrum.dk
+

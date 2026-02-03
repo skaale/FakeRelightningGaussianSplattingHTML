@@ -505,10 +505,10 @@
                 <li>Undo/Redo with full history</li>
                 <li>Documentation & sample scenes</li>
             </ul>
-            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 79)">
-                Add to Cart — $79
+            <button class="add-btn" id="addToCartBtn" disabled style="background: #999; cursor: not-allowed;">
+                Coming Soon — $79
             </button>
-            <p class="product-meta">Unity 2021.3 LTS+ · Lifetime updates</p>
+            <p class="product-meta">Unity 2021.3 LTS+ · Lifetime updates · Launching soon</p>
         </div>
     </section>
 
@@ -540,10 +540,10 @@
                 <li>60+ FPS performance in VR</li>
                 <li>Multiple dynamic lights support</li>
             </ul>
-            <button class="add-btn" id="addRelightingBtn" onclick="addToCart('gaussian-relighting', 'Gaussian Splatting Re-Lightning', 299)">
-                Add to Cart — $299
+            <button class="add-btn" id="addRelightingBtn" disabled style="background: #999; cursor: not-allowed;">
+                Coming Soon — $299
             </button>
-            <p class="product-meta">Unity 2021.3 LTS+ · URP/HDRP/Built-in · Lifetime updates</p>
+            <p class="product-meta">Unity 2021.3 LTS+ · URP/HDRP/Built-in · Lifetime updates · Launching soon</p>
         </div>
     </section>
 
@@ -656,10 +656,10 @@
                 ]
             },
             'worldlabs-api': {
-                file: 'Products/WorldlabsAPI/WorldlabsAPI.zip', // TODO: Update path when file exists
+                file: 'Products/WorldlabsAPI/WorldlabsAPI.zip',
                 name: 'WorldlabsAPI.zip',
                 items: [
-                    'Worldlabs Unity API.unitypackage',
+                    'WorldlabsAPI.zip',
                     'API documentation',
                     'Sample integration code',
                     'License file'
@@ -676,7 +676,16 @@
             updateCartUI();
         }
         
+        // Products that are currently disabled/not available
+        const DISABLED_PRODUCTS = ['unity-gsplat-editor', 'gaussian-relighting'];
+        
         function addToCart(productId, name, price) {
+            // Check if product is disabled
+            if (DISABLED_PRODUCTS.includes(productId)) {
+                showNotification('This product is not available yet');
+                return;
+            }
+            
             const cart = getCart();
             if (cart.find(item => item.id === productId)) {
                 showNotification('Already in cart');
@@ -696,12 +705,20 @@
         }
         
         function updateCartUI() {
-            const cart = getCart();
+            let cart = getCart();
             const itemsEl = document.getElementById('cartItems');
             const emptyEl = document.getElementById('cartEmpty');
             const footerEl = document.getElementById('cartFooter');
             const totalEl = document.getElementById('cartTotalPrice');
             const badge = document.getElementById('cartBadge');
+            
+            // Remove disabled products from cart
+            const originalLength = cart.length;
+            cart = cart.filter(item => !DISABLED_PRODUCTS.includes(item.id));
+            if (cart.length !== originalLength) {
+                saveCart(cart);
+                showNotification('Some unavailable products were removed from your cart');
+            }
             
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
             if (count > 0) {
@@ -802,6 +819,13 @@
         function proceedToCheckout() {
             const cart = getCart();
             if (cart.length === 0) return;
+            
+            // Check if any disabled products are in cart
+            const disabledInCart = cart.filter(item => DISABLED_PRODUCTS.includes(item.id));
+            if (disabledInCart.length > 0) {
+                alert('Some products in your cart are not available yet. Please remove them before checkout.');
+                return;
+            }
             
             // Store cart in sessionStorage for success page
             sessionStorage.setItem('pendingPurchase', JSON.stringify(cart));
