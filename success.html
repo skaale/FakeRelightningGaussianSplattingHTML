@@ -211,19 +211,14 @@
             
             <div class="info-box download-box">
                 <h3>Download Your Files</h3>
-                <p style="margin-bottom: 1rem;">Click below to download your VHS 1980 VR Effects package.</p>
-                <a href="Products/1980VREffects/VHSWorld.zip" class="download-btn" download>
-                    ↓ Download VHSWorld.zip
-                </a>
+                <p style="margin-bottom: 1rem;">Loading your download…</p>
+                <a href="#" class="download-btn">—</a>
             </div>
             
             <div class="info-box">
                 <h3>What's Included</h3>
                 <ul>
-                    <li>VHS_1980_VR_Effects.unitypackage</li>
-                    <li>5 Movie presets (Blade Runner, Terminator, etc.)</li>
-                    <li>Documentation & setup guide</li>
-                    <li>License file</li>
+                    <li>—</li>
                 </ul>
             </div>
             
@@ -306,7 +301,7 @@
                 // Multiple products - use first one for now
                 return productsParam.split(',')[0];
             } else {
-                // Try to get from sessionStorage
+                // Try to get from sessionStorage (before it's cleared)
                 const pendingPurchase = sessionStorage.getItem('pendingPurchase');
                 if (pendingPurchase) {
                     try {
@@ -320,17 +315,36 @@
                 }
             }
             
-            // Default to VHS if nothing found
-            return 'vhs-vr-effects';
+            // No product identified - do not default to a specific product (would give wrong download)
+            return null;
         }
         
         // Update page content based on product
         function updateSuccessPage() {
             const productId = getProductId();
-            const product = PRODUCT_DOWNLOADS[productId];
+            const product = productId ? PRODUCT_DOWNLOADS[productId] : null;
+            
+            // Clear cart after we've read it (so getProductId could use sessionStorage)
+            localStorage.removeItem('gsplatCart');
+            sessionStorage.removeItem('pendingPurchase');
             
             if (!product) {
-                console.error('Product not found:', productId);
+                // Unknown product - show generic message so we never serve the wrong download
+                const downloadBox = document.querySelector('.download-box');
+                const downloadBtn = document.querySelector('.download-btn');
+                const itemsList = document.querySelector('.info-box ul');
+                if (downloadBox) {
+                    const p = downloadBox.querySelector('p');
+                    if (p) p.textContent = 'Your payment was successful. We could not determine which product you purchased. Please contact support with your receipt (order/email) and we will send you the correct download link.';
+                    if (downloadBtn) {
+                        downloadBtn.textContent = 'Contact support for your download';
+                        downloadBtn.href = 'mailto:support@simulacrum.dk?subject=Download%20link%20request';
+                        downloadBtn.removeAttribute('download');
+                    }
+                }
+                if (itemsList) {
+                    itemsList.innerHTML = '<li>Include your order or payment email when you contact support</li><li>You will receive the correct download link promptly</li>';
+                }
                 return;
             }
             
@@ -370,11 +384,7 @@
             }
         }
         
-        // Clear cart after successful purchase
-        localStorage.removeItem('gsplatCart');
-        sessionStorage.removeItem('pendingPurchase');
-        
-        // Update page on load
+        // Update page on load (storage is cleared inside updateSuccessPage after reading product)
         document.addEventListener('DOMContentLoaded', updateSuccessPage);
     </script>
 </body>
