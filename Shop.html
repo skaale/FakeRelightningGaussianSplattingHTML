@@ -281,6 +281,14 @@
             justify-content: center;
             font-size: 1.5rem;
             color: #ccc;
+            flex-shrink: 0;
+        }
+        .cart-item-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+            flex-shrink: 0;
         }
         .cart-item-name {
             font-weight: 500;
@@ -628,6 +636,14 @@
             'worldlabs-api': 'https://buy.stripe.com/7sYcMYb3X42a0WK7B27kc08'
         };
         
+        // Product thumbnail images for cart
+        const PRODUCT_IMAGES = {
+            'worldlabs-api': 'Video/Worldlabs/promoImage.png',
+            'vhs-vr-effects': '1980Promo.jpg',
+            'unity-gsplat-editor': null,
+            'gaussian-relighting': null
+        };
+        
         // Product download mapping
         const PRODUCT_DOWNLOADS = {
             'vhs-vr-effects': {
@@ -747,9 +763,14 @@
             let total = 0;
             cart.forEach(item => {
                 total += item.price;
+                const thumbSrc = PRODUCT_IMAGES[item.id];
+                const thumbHtml = thumbSrc
+                    ? `<img src="${thumbSrc}" alt="" class="cart-item-thumb">`
+                    : `<div class="cart-item-icon">◇</div>`;
                 html += `
                     <div class="cart-item">
                         <div class="cart-item-info">
+                            ${thumbHtml}
                             <div>
                                 <div class="cart-item-name">${item.name}</div>
                                 <div class="cart-item-price">$${item.price}</div>
