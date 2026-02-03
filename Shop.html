@@ -443,7 +443,7 @@
     </section>
 
     <!-- Product: Worldlabs Unity API -->
-    <section class="product-section">
+    <section class="product-section" id="worldlabs-api">
         <div class="product-media">
             <img src="Video/Worldlabs/promoImage.png" alt="Worldlabs Unity API" class="product-image" style="object-fit: cover; width: 100%;">
             <video class="product-video" controls muted loop>
@@ -481,7 +481,7 @@
     </section>
 
     <!-- Product: VHS VR Effects -->
-    <section class="product-section" style="border-top: 1px solid #e0e0e0;">
+    <section class="product-section" id="vhs-vr-effects" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
             <img src="1980Promo.jpg" alt="VHS 1980 VR Effects" class="product-image" style="object-fit: cover; width: 100%;">
             <video class="product-video" controls muted loop>
@@ -516,7 +516,7 @@
     </section>
 
     <!-- Product: Gaussian Splat Editor -->
-    <section class="product-section" style="border-top: 1px solid #e0e0e0;">
+    <section class="product-section" id="unity-gsplat-editor" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
             <div class="product-image">◇</div>
             <video class="product-video" controls muted loop>
@@ -551,7 +551,7 @@
     </section>
 
     <!-- Product: Gaussian Splatting Re-Lightning -->
-    <section class="product-section" style="border-top: 1px solid #e0e0e0;">
+    <section class="product-section" id="gaussian-relighting" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
             <div class="product-image">◈</div>
             <video class="product-video" controls muted loop>
@@ -885,8 +885,23 @@
                     updateAddToCartButton(id);
                 }
             });
-            if (window.location.hash === '#cart') {
-                setTimeout(() => document.getElementById('cart').scrollIntoView({ behavior: 'smooth' }), 100);
+            // Handle anchor links for smooth scrolling
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                const productIds = ['worldlabs-api', 'vhs-vr-effects', 'unity-gsplat-editor', 'gaussian-relighting'];
+                
+                if (hash === 'cart') {
+                    setTimeout(() => document.getElementById('cart').scrollIntoView({ behavior: 'smooth' }), 100);
+                } else if (productIds.includes(hash)) {
+                    setTimeout(() => {
+                        const element = document.getElementById(hash);
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            // Offset for fixed nav
+                            window.scrollBy(0, -80);
+                        }
+                    }, 100);
+                }
             }
         });
     </script>
