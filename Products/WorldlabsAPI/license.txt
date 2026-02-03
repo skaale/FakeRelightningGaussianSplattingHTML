@@ -1,4 +1,4 @@
-Worldlabs API Effects - License
+Worldlabs Unity API - License
 ==============================
 
 Copyright (c) 2025 Simulacrum Inc / Daniel Skaale
@@ -10,36 +10,11 @@ This software is licensed for use in personal and commercial projects.
 You may use this package in unlimited projects.
 You may NOT redistribute, resell, or share the source code.
 
-THIRD-PARTY CREDITS & ATTRIBUTIONS
-----------------------------------
-This package includes effects and techniques adapted from open source 
-shaders available on Shadertoy (https://www.shadertoy.com/).
-
-Shadertoy shaders are typically released under the MIT License or 
-Creative Commons licenses by their original authors. The following 
-effects were inspired by or adapted from Shadertoy contributions:
-
-- VHS tape distortion effects
-- CRT scanline simulations
-- Chroma aberration and color bleeding
-- Film grain and noise patterns
-- Analog signal interference effects
-
-We acknowledge and thank the Shadertoy community for their contributions
-to real-time graphics research and open source shader development.
-
-SHADERTOY LICENSE REFERENCE
----------------------------
-Many Shadertoy shaders are released under the MIT License:
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files, to deal
-in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
+INSTALLATION
+------------
+Use Unity Package Manager to install. After purchase, extract the ZIP file 
+and use Window → Package Manager → Add package from disk... to select the 
+package.json file.
 
 DISCLAIMER
 ----------
@@ -55,4 +30,3 @@ SUPPORT
 -------
 For questions or support: simulacrumdk@gmail.com
 Website: https://www.simulacrum.dk
-
