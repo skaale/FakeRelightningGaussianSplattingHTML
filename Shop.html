@@ -741,6 +741,14 @@
             saveCart(cart);
             showNotification('Added to cart');
             updateAddToCartButton(productId);
+            
+            // Scroll to cart section at the bottom of the page
+            setTimeout(() => {
+                const cartSection = document.getElementById('cart');
+                if (cartSection) {
+                    cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 300); // Small delay to let the cart UI update first
         }
         
         function removeFromCart(productId) {
