@@ -540,15 +540,15 @@
     <!-- Product: Gaussian Splat Editor -->
     <section class="product-section" id="unity-gsplat-editor" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
-            <div class="product-image">◇</div>
+            <img src="Video/GSEditor/editor.png" alt="Gaussian Splat Editor" class="product-image" style="object-fit: contain; width: 100%; height: auto; background: #f5f5f5;">
             <video class="product-video" controls muted loop>
-                <source src="gsplat-demo.mp4" type="video/mp4">
+                <source src="Video/GSEditor/promoGSeditor.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
         <div class="product-info">
             <h2>Unity Editor Plugin</h2>
-            <h3>Gaussian Splat Editor</h3>
+            <h3>Splat Box Editor</h3>
             <div class="product-price">$79</div>
             <p class="product-desc">
                 A powerful Unity Editor plugin for editing and manipulating 3D Gaussian Splats 
@@ -561,14 +561,18 @@
                 <li>Import/Export PLY formats</li>
                 <li>Batch editing operations</li>
                 <li>Transform gizmos & precision tools</li>
-                <li>VR-ready editing mode</li>
                 <li>Undo/Redo with full history</li>
-                <li>Documentation & sample scenes</li>
             </ul>
-            <button class="add-btn" id="addToCartBtn" disabled style="background: #999; cursor: not-allowed;">
-                Coming Soon — $79
+            <div style="background: #f9f9f9; border-left: 3px solid #000; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
+                <strong>Installation:</strong> Use Unity Package Manager to install. After purchase, extract the ZIP file and use <strong>Window → Package Manager → Add package from disk...</strong> to select the package.json file.
+            </div>
+            <div style="background: #f0f0f0; border-left: 3px solid #666; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
+                <strong>Precompiled Binaries:</strong> This package includes precompiled binaries. For full source code access, please contact me via <a href="about.html" style="color: #000; text-decoration: underline;">About page</a>.
+            </div>
+            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 79)">
+                Add to Cart — $79
             </button>
-            <p class="product-meta">Unity 2021.3 LTS+ · Lifetime updates · Launching soon</p>
+            <p class="product-meta">Unity 2021.3 LTS+ · Lifetime updates</p>
         </div>
     </section>
 
@@ -652,7 +656,7 @@
         const PRODUCT_IMAGES = {
             'worldlabs-api': 'Video/Worldlabs/promoImage.png',
             'vhs-vr-effects': '1980Promo.jpg',
-            'unity-gsplat-editor': null,
+            'unity-gsplat-editor': 'Video/GSEditor/editor.png',
             'gaussian-relighting': null
         };
         
@@ -710,7 +714,7 @@
         }
         
         // Products that are currently disabled/not available
-        const DISABLED_PRODUCTS = ['unity-gsplat-editor', 'gaussian-relighting'];
+        const DISABLED_PRODUCTS = ['gaussian-relighting'];
         
         function addToCart(productId, name, price) {
             // Check if product is disabled
