@@ -900,9 +900,10 @@
                 }
                 
                 if (stripeUrl) {
-                    // Add success URL parameter to redirect back after payment
-                    const successUrl = encodeURIComponent(window.location.origin + '/success.html?product=' + productId);
-                    window.location.href = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + 'success_url=' + successUrl;
+                    // Redirect to Stripe Payment Link
+                    // Note: Success URL must be configured in Stripe Dashboard for each Payment Link
+                    // Set it to: https://simulacrum.dk/success.html?product={product-id}
+                    window.location.href = stripeUrl;
                 } else {
                     alert('Payment link not found for this product. Please contact support.');
                 }
@@ -911,8 +912,9 @@
                 const productId = cart[0].id;
                 const stripeUrl = STRIPE_PAYMENT_LINKS[productId];
                 if (stripeUrl) {
-                    const successUrl = encodeURIComponent(window.location.origin + '/success.html?products=' + cart.map(p => p.id).join(','));
-                    window.location.href = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + 'success_url=' + successUrl;
+                    // Note: For multiple products, you may need to create a custom checkout session
+                    // For now, redirecting to first product's payment link
+                    window.location.href = stripeUrl;
                 }
             }
         }
