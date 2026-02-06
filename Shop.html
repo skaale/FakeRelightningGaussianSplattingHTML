@@ -578,8 +578,8 @@
             <div style="background: #f0f0f0; border-left: 3px solid #666; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Precompiled Binaries:</strong> This package includes precompiled binaries. For full source code access, please contact me for a price via <a href="about.html" style="color: #000; text-decoration: underline;">About page</a>.
             </div>
-            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 79)">
-                Add to Cart — $79
+            <button class="add-btn" id="addToCartBtn" disabled style="background: #999; cursor: not-allowed;">
+                Coming Soon — $79
             </button>
             <p class="product-meta">Unity 2021.3 LTS+ · URP (default render pipeline) · Lifetime updates</p>
         </div>
@@ -723,7 +723,7 @@
         }
         
         // Products that are currently disabled/not available
-        const DISABLED_PRODUCTS = ['gaussian-relighting'];
+        const DISABLED_PRODUCTS = ['gaussian-relighting', 'unity-gsplat-editor'];
         
         function addToCart(productId, name, price) {
             // Check if product is disabled
