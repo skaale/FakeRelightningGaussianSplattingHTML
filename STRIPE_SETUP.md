@@ -15,9 +15,9 @@
 - **Success URL**: `https://simulacrum.dk/success.html?product=unity-gsplat-editor`
 - Copy the Payment Link URL and update `Shop.html` line 610
 
-#### Product 2: Gaussian Splatting Re-Lightning ✅
+#### Product 2: Gaussian Splatting Relighting ✅
 - **Price**: $299.00 USD
-- **Product Name**: Gaussian Splatting Re-Lightning
+- **Product Name**: Gaussian Splatting Relighting
 - **Description**: Real-time dynamic lighting system for 3D Gaussian Splats
 - **Success URL**: `https://simulacrum.dk/success.html?product=gaussian-relighting`
 - **Payment Link**: `https://buy.stripe.com/eVq28k0pj8iq5d04oQ7kc04` ✅ Configured
@@ -83,7 +83,7 @@ In each Stripe Payment Link settings:
 - **Must include** the product parameter. Examples:
   - VHS 1980 VR Effects: `https://www.simulacrum.dk/success.html?product=vhs-vr-effects`
   - Worldlabs Unity API: `https://www.simulacrum.dk/success.html?product=worldlabs-api`
-  - Gaussian Splatting Re-Lightning: `https://www.simulacrum.dk/success.html?product=gaussian-relighting`
+  - Gaussian Splatting Relighting: `https://www.simulacrum.dk/success.html?product=gaussian-relighting`
   - Gaussian Splat Editor: `https://www.simulacrum.dk/success.html?product=unity-gsplat-editor`
   - TRIPO API UNITY HDRP: `https://www.simulacrum.dk/success.html?product=trip-api-unity-hdrp`
 - Using only `https://www.simulacrum.dk/success.html` (no `?product=`) will show the wrong/empty download state.
