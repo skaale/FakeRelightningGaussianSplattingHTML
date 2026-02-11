@@ -570,7 +570,7 @@
                 <li>Import/Export PLY and SPZ formats</li>
                 <li>Batch editing operations</li>
                 <li>Transform gizmos & precision tools</li>
-                <li style="color: #666; font-style: italic;">Windows-based Editor tool (no VR standalone support)</li>
+                <li style="color: #666; font-style: italic;">Windows-based Editor tool (no offical VR standalone support)</li>
             </ul>
             <div style="background: #e8f4f8; border-left: 3px solid #2196F3; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Tested on Unity 6.3.x:</strong> This Unity Editor Plugin has been tested on Unity 6.x. Compatibility with other Unity versions may vary.
@@ -585,6 +585,38 @@
                 Add to Cart — $79
             </button>
             <p class="product-meta">Unity 6.3 LTS · URP (default render pipeline) · Lifetime updates</p>
+        </div>
+    </section>
+
+    <!-- Product: TRIPO API UNITY HDRP -->
+    <section class="product-section" id="trip-api-unity-hdrp" style="border-top: 1px solid #e0e0e0;">
+        <div class="product-media">
+            <div class="product-image" style="background: #1a1a2e; color: #eee; font-size: 2rem; min-height: 280px;">TRIPO</div>
+        </div>
+        <div class="product-info">
+            <h2>Unity HDRP API</h2>
+            <h3>TRIPO API UNITY HDRP</h3>
+            <div class="product-price">$9.95</div>
+            <p class="product-desc">
+                TRIPO API integration for Unity HDRP. Connect your High Definition Render Pipeline projects 
+                with TRIPO services for real-time 3D capture, streaming, and cloud workflows directly in the Unity Editor.
+            </p>
+            <ul class="feature-list">
+                <li>Full TRIPO API for Unity HDRP</li>
+                <li>HDRP-compatible rendering pipeline</li>
+                <li>Real-time capture and streaming</li>
+                <li>Cloud sync and asset management</li>
+                <li>Custom HDRP shader integration</li>
+                <li>RESTful API wrapper</li>
+                <li>Async/await support</li>
+            </ul>
+            <div style="background: #f9f9f9; border-left: 3px solid #000; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
+                <strong>Installation:</strong> Use Unity Package Manager. After purchase, extract the ZIP and use <strong>Window → Package Manager → Add package from disk...</strong> to select the package.json file.
+            </div>
+            <button class="add-btn" id="addTripApiBtn" disabled style="background: #999; cursor: not-allowed;">
+                Coming Soon — $9.95
+            </button>
+            <p class="product-meta">Unity 2022.3 LTS+ · HDRP · Lifetime updates</p>
         </div>
     </section>
 
@@ -661,7 +693,8 @@
             'vhs-vr-effects': 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01',
             'unity-gsplat-editor': 'https://buy.stripe.com/14A4gseg9fKS5d0bRi7kc06',
             'gaussian-relighting': 'https://buy.stripe.com/eVq28k0pj8iq5d04oQ7kc04',
-            'worldlabs-api': 'https://buy.stripe.com/7sYcMYb3X42a0WK7B27kc08'
+            'worldlabs-api': 'https://buy.stripe.com/7sYcMYb3X42a0WK7B27kc08',
+            'trip-api-unity-hdrp': 'https://buy.stripe.com/placeholder_trip_api_hdrp'
         };
         
         // Product thumbnail images for cart
@@ -669,7 +702,8 @@
             'worldlabs-api': 'Video/Worldlabs/promoImage.png',
             'vhs-vr-effects': '1980Promo.jpg',
             'unity-gsplat-editor': 'Video/GSEditor/editor.png',
-            'gaussian-relighting': null
+            'gaussian-relighting': null,
+            'trip-api-unity-hdrp': null
         };
         
         // Product download mapping
@@ -713,6 +747,16 @@
                     'Sample integration code',
                     'License file'
                 ]
+            },
+            'trip-api-unity-hdrp': {
+                file: 'Products/TRIPOAPIHDRP/TRIPOAPIHDRP.zip',
+                name: 'TRIPOAPIHDRP.zip',
+                items: [
+                    'TRIPO API UNITY HDRP package',
+                    'HDRP API documentation',
+                    'Sample scenes',
+                    'License file'
+                ]
             }
         };
         
@@ -726,7 +770,7 @@
         }
         
         // Products that are currently disabled/not available
-        const DISABLED_PRODUCTS = ['gaussian-relighting'];
+        const DISABLED_PRODUCTS = ['gaussian-relighting', 'trip-api-unity-hdrp'];
         
         function addToCart(productId, name, price) {
             // Check if product is disabled
@@ -847,6 +891,12 @@
                     btn.textContent = '✓ Added';
                     btn.disabled = true;
                 }
+            } else if (productId === 'trip-api-unity-hdrp') {
+                const btn = document.getElementById('addTripApiBtn');
+                if (btn) {
+                    btn.textContent = '✓ Added';
+                    btn.disabled = true;
+                }
             }
         }
         
@@ -873,6 +923,12 @@
                 const btn = document.getElementById('addWorldlabsBtn');
                 if (btn) {
                     btn.textContent = 'Add to Cart — $29';
+                    btn.disabled = false;
+                }
+            } else if (productId === 'trip-api-unity-hdrp') {
+                const btn = document.getElementById('addTripApiBtn');
+                if (btn) {
+                    btn.textContent = 'Add to Cart — $9.95';
                     btn.disabled = false;
                 }
             }
@@ -940,7 +996,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateCartUI();
             const cart = getCart();
-            const productIds = ['unity-gsplat-editor', 'vhs-vr-effects', 'gaussian-relighting', 'worldlabs-api'];
+            const productIds = ['unity-gsplat-editor', 'vhs-vr-effects', 'gaussian-relighting', 'worldlabs-api', 'trip-api-unity-hdrp'];
             productIds.forEach(id => {
                 if (cart.find(item => item.id === id)) {
                     updateAddToCartButton(id);
@@ -949,7 +1005,7 @@
             // Handle anchor links for smooth scrolling
             if (window.location.hash) {
                 const hash = window.location.hash.substring(1);
-                const productIds = ['worldlabs-api', 'vhs-vr-effects', 'unity-gsplat-editor', 'gaussian-relighting'];
+                const productIds = ['worldlabs-api', 'vhs-vr-effects', 'unity-gsplat-editor', 'gaussian-relighting', 'trip-api-unity-hdrp'];
                 
                 if (hash === 'cart') {
                     setTimeout(() => document.getElementById('cart').scrollIntoView({ behavior: 'smooth' }), 100);

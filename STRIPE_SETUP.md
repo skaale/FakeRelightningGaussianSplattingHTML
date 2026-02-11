@@ -37,6 +37,13 @@
   ⚠️ Do **not** use `https://www.simulacrum.dk/success.html` alone — the `?product=vhs-vr-effects` is required so the correct download is shown.
 - **Payment Link**: (see Shop.html) ✅ Configured
 
+#### Product 5: TRIPO API UNITY HDRP
+- **Price**: $9.95 USD
+- **Product Name**: TRIPO API UNITY HDRP
+- **Description**: TRIPO API integration for Unity HDRP — real-time 3D capture, streaming, and cloud workflows
+- **Success URL (required)**: `https://www.simulacrum.dk/success.html?product=trip-api-unity-hdrp`
+- **Payment Link**: Create in Stripe Dashboard, then paste the URL into `Shop.html` (replace `placeholder_trip_api_hdrp` in `STRIPE_PAYMENT_LINKS`)
+
 ### Step 2: Update Shop.html
 
 Replace the placeholder URLs in `Shop.html`:
@@ -46,7 +53,8 @@ const STRIPE_PAYMENT_LINKS = {
     'vhs-vr-effects': 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01',
     'unity-gsplat-editor': 'YOUR_STRIPE_LINK_HERE',
     'gaussian-relighting': 'YOUR_STRIPE_LINK_HERE',
-    'worldlabs-api': 'YOUR_STRIPE_LINK_HERE'
+    'worldlabs-api': 'YOUR_STRIPE_LINK_HERE',
+    'trip-api-unity-hdrp': 'YOUR_STRIPE_LINK_HERE'   // $9.95 — create Payment Link, set Success URL to success.html?product=trip-api-unity-hdrp
 };
 ```
 
@@ -62,8 +70,10 @@ Products/
 │   └── GaussianSplatEditor.zip
 ├── Relighting/
 │   └── Relighting.zip
-└── WorldlabsAPI/
-    └── WorldlabsAPI.zip
+├── WorldlabsAPI/
+│   └── WorldlabsAPI.zip
+└── TRIPOAPIHDRP/
+    └── TRIPOAPIHDRP.zip
 ```
 
 ### Step 4: Configure Stripe Success URLs
@@ -75,6 +85,7 @@ In each Stripe Payment Link settings:
   - Worldlabs Unity API: `https://www.simulacrum.dk/success.html?product=worldlabs-api`
   - Gaussian Splatting Re-Lightning: `https://www.simulacrum.dk/success.html?product=gaussian-relighting`
   - Gaussian Splat Editor: `https://www.simulacrum.dk/success.html?product=unity-gsplat-editor`
+  - TRIPO API UNITY HDRP: `https://www.simulacrum.dk/success.html?product=trip-api-unity-hdrp`
 - Using only `https://www.simulacrum.dk/success.html` (no `?product=`) will show the wrong/empty download state.
 
 The success page will automatically:
