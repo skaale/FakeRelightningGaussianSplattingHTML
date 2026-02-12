@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Tutorials — Simulacrum Inc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.6;
+        }
+        .mono { font-family: 'Space Mono', monospace; }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            border-bottom: 1px solid #000;
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            font-size: 0.85rem;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+        .nav-links a:hover { text-decoration: underline; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid #000;
+            padding: 0.5rem 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            margin-top: 1rem;
+        }
+        .mobile-nav.active { display: flex; }
+        .mobile-nav a { font-size: 0.9rem; color: #000; text-decoration: none; }
+        .hero {
+            padding: 8rem 2rem 4rem;
+            border-bottom: 1px solid #000;
+            background: url('header/H1.png') center center / cover no-repeat;
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero-inner { max-width: 1200px; margin: 0 auto; }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+        .hero p { color: #333; font-size: 1rem; }
+        .tuts-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .product-tuts {
+            padding: 3rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .product-tuts:first-of-type { padding-top: 2rem; }
+        .product-tuts h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 0.25rem;
+        }
+        .product-tuts h3 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        .product-tuts .shop-link {
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        .product-tuts .shop-link a {
+            color: #000;
+            text-decoration: underline;
+        }
+        .tut-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+        .tut-card {
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .tut-card:hover {
+            border-color: #000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .tut-card a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .tut-thumb {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: #eee;
+            object-fit: cover;
+            display: block;
+        }
+        .tut-title {
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        .tut-card .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.25rem;
+            pointer-events: none;
+        }
+        .tut-card .thumb-wrap {
+            position: relative;
+        }
+        footer {
+            border-top: 1px solid #000;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        footer p { font-size: 0.8rem; color: #999; }
+        footer a { color: #000; }
+        @media (max-width: 992px) {
+            .tut-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero h1 { font-size: 1.75rem; }
+            .tut-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .tut-title { font-size: 0.75rem; padding: 0.5rem 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="logo">Simulacrum Inc</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#articles">Articles</a>
+                <a href="SPAG.html">SPAG</a>
+                <a href="VideoTuts.html">Video Tuts</a>
+                <a href="about.html">About</a>
+                <a href="Shop.html#cart" class="cart-link">Cart</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Menu</button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="index.html">Home</a>
+            <a href="index.html#articles">Articles</a>
+            <a href="SPAG.html">SPAG</a>
+            <a href="VideoTuts.html">Video Tuts</a>
+            <a href="about.html">About</a>
+            <a href="Shop.html#cart">Cart</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <h1>How to install and use the plugins</h1>
+        </div>
+    </section>
+
+    <div class="tuts-wrap">
+        <!-- Worldlabs Unity API -->
+        <section class="product-tuts" id="worldlabs-api">
+            <h2>Unity API Integration</h2>
+            <h3>Worldlabs Unity API</h3>
+            <p class="shop-link"><a href="Shop.html#worldlabs-api">View product in Shop →</a></p>
+            <div class="tut-grid">
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 1">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Worldlabs/promoImage.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">1. Installation</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 2">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Worldlabs/promoImage.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">2. First steps</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 3">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Worldlabs/promoImage.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">3. API basics</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 4">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Worldlabs/promoImage.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">4. Video to World</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 5">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Worldlabs/promoImage.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">5. Tips & troubleshooting</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- VHS 1980 VR Effects -->
+        <section class="product-tuts" id="vhs-vr-effects">
+            <h2>Unity VR Post-Processing</h2>
+            <h3>VHS 1980 VR Effects</h3>
+            <p class="shop-link"><a href="Shop.html#vhs-vr-effects">View product in Shop →</a></p>
+            <div class="tut-grid">
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 1">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="1980Promo.jpg" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">1. Installation</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 2">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="1980Promo.jpg" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">2. Adding to scene</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 3">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="1980Promo.jpg" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">3. Presets & parameters</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 4">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="1980Promo.jpg" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">4. VR setup</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 5">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="1980Promo.jpg" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">5. Tips & troubleshooting</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Splat Box Editor -->
+        <section class="product-tuts" id="unity-gsplat-editor">
+            <h2>Unity Editor Plugin</h2>
+            <h3>Splat Box Editor</h3>
+            <p class="shop-link"><a href="Shop.html#unity-gsplat-editor">View product in Shop →</a></p>
+            <div class="tut-grid">
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 1">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/GSEditor/editor.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">1. Installation</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 2">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/GSEditor/editor.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">2. Import PLY / SPZ</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 3">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/GSEditor/editor.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">3. Selection & transform</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 4">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/GSEditor/editor.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">4. Export & workflow</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 5">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/GSEditor/editor.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">5. Tips & troubleshooting</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gaussian Relighting -->
+        <section class="product-tuts" id="gaussian-relighting">
+            <h2>Relighting Plugin</h2>
+            <h3>Gaussian Splatting Relighting</h3>
+            <p class="shop-link"><a href="Shop.html#gaussian-relighting">View product in Shop →</a></p>
+            <div class="tut-grid">
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 1">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Relighting/relighting-ui.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">1. Installation</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 2">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Relighting/relighting-ui.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">2. Splat Box + Relighting</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 3">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Relighting/relighting-ui.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">3. Lighting controls</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 4">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Relighting/relighting-ui.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">4. Shader options</div>
+                    </a>
+                </div>
+                <div class="tut-card">
+                    <a href="#" data-video="" aria-label="Tutorial 5">
+                        <div class="thumb-wrap">
+                            <img class="tut-thumb" src="Video/Relighting/relighting-ui.png" alt="">
+                            <span class="play-icon">▶</span>
+                        </div>
+                        <div class="tut-title">5. Tips & troubleshooting</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p><a href="index.html">← Back to Home</a></p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+        document.querySelectorAll('.tut-card a[href="#"]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
+                var url = this.getAttribute('data-video');
+                if (url) { window.location.href = url; }
+                else { e.preventDefault(); }
+            });
+        });
+    </script>
+</body>
+</html>
