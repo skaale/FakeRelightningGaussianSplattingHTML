@@ -50,6 +50,36 @@
             letter-spacing: 0.02em;
         }
         .nav-links a:hover { text-decoration: underline; }
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #000;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+        }
+        .cart-link:hover {
+            background: #000;
+            color: #fff;
+            text-decoration: none !important;
+        }
+        .cart-count {
+            background: #000;
+            color: #fff;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+        }
+        .cart-link:hover .cart-count {
+            background: #fff;
+            color: #000;
+        }
+        .cart-count.hidden { display: none; }
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -73,7 +103,7 @@
             padding: 8rem 2rem 4rem;
             border-bottom: 1px solid #000;
             background: url('header/H1.png') center center / cover no-repeat;
-            min-height: 280px;
+            min-height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -85,9 +115,20 @@
             font-weight: 500;
             letter-spacing: -0.03em;
             margin-bottom: 0.5rem;
-            color: #000;
+            color: #fff;
+            display: inline-block;
+            background: #000;
+            padding: 0.4rem 0.75rem;
         }
-        .hero p { color: #333; font-size: 1rem; }
+        .hero .hero-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+        .hero p { color: #fff; font-size: 1rem; }
         .tuts-wrap {
             max-width: 1200px;
             margin: 0 auto;
@@ -181,10 +222,10 @@
         @media (max-width: 992px) {
             .tut-grid { grid-template-columns: repeat(3, 1fr); }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
-            .hero h1 { font-size: 1.75rem; }
+            .hero h1 { font-size: 2rem; }
             .tut-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
             .tut-title { font-size: 0.75rem; padding: 0.5rem 0.75rem; }
         }
@@ -196,16 +237,20 @@
             <a href="index.html" class="logo">Simulacrum Inc</a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
+                <a href="Shop.html">Shop</a>
                 <a href="index.html#articles">Articles</a>
                 <a href="SPAG.html">SPAG</a>
                 <a href="VideoTuts.html">Video Tuts</a>
                 <a href="about.html">About</a>
-                <a href="Shop.html#cart" class="cart-link">Cart</a>
+                <a href="Shop.html#cart" class="cart-link">
+                    Cart <span class="cart-count hidden" id="cartBadge">0</span>
+                </a>
             </div>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">Menu</button>
         </div>
         <div class="mobile-nav" id="mobileNav">
             <a href="index.html">Home</a>
+            <a href="Shop.html">Shop</a>
             <a href="index.html#articles">Articles</a>
             <a href="SPAG.html">SPAG</a>
             <a href="VideoTuts.html">Video Tuts</a>
@@ -216,6 +261,7 @@
 
     <section class="hero">
         <div class="hero-inner">
+            <p class="hero-label">Video tuts</p>
             <h1>How to install and use the plugins</h1>
         </div>
     </section>
@@ -446,6 +492,15 @@
         function toggleMobileMenu() {
             document.getElementById('mobileNav').classList.toggle('active');
         }
+        (function() {
+            var cart = JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+            var total = cart.reduce(function(n, i) { return n + (i.quantity || 1); }, 0);
+            var badge = document.getElementById('cartBadge');
+            if (badge) {
+                badge.textContent = total;
+                if (total > 0) badge.classList.remove('hidden');
+            }
+        })();
         document.querySelectorAll('.tut-card a[href="#"]').forEach(function(a) {
             a.addEventListener('click', function(e) {
                 var url = this.getAttribute('data-video');
