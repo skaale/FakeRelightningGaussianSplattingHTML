@@ -637,7 +637,7 @@
         <div class="product-info">
             <h2>Unity Shader Package</h2>
             <h3>Gaussian Splatting Relighting</h3>
-            <div class="product-price">$299</div>
+            <div class="product-price">$99</div>
             <p class="product-desc">
                 A professional relighting plugin built from the ground up on the research paper 
                 <em>A Novel Approach to Dynamic Lighting in Billboard-Based Volumetric Rendering</em>. 
@@ -657,8 +657,8 @@
             <div style="background: #f0f0f0; border-left: 3px solid #000; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Requirement:</strong> This relighting plugin works only with the <a href="#unity-gsplat-editor" style="color: #000; text-decoration: underline;">Splat Box Editor</a> plugin. You need both for full functionality.
             </div>
-            <button class="add-btn" id="addRelightingBtn" onclick="addToCart('gaussian-relighting', 'Gaussian Splatting Relighting', 299)">
-                Add to Cart — $299
+            <button class="add-btn" id="addRelightingBtn" onclick="addToCart('gaussian-relighting', 'Gaussian Splatting Relighting', 99)">
+                Add to Cart — $99
             </button>
             <p class="product-meta">Unity 2021.3 LTS+ · URP/HDRP/Built-in · Lifetime updates</p>
         </div>
@@ -693,7 +693,7 @@
         // 1. Go to Stripe Dashboard > Products > Payment Links
         // 2. Create a new Payment Link for each product:
         //    - Gaussian Splat Editor: $2
-        //    - Gaussian Splatting Relighting: $299
+        //    - Gaussian Splatting Relighting: $99
         //    - Worldlabs Unity API: $29
         // 3. Set Success URL to: https://simulacrum.dk/success.html?product={PRODUCT_ID}
         // 4. Copy the Payment Link URL and paste it below
@@ -701,7 +701,7 @@
         const STRIPE_PAYMENT_LINKS = {
             'vhs-vr-effects': 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01',
             'unity-gsplat-editor': 'https://buy.stripe.com/14A4gseg9fKS5d0bRi7kc06',
-            'gaussian-relighting': 'https://buy.stripe.com/eVq28k0pj8iq5d04oQ7kc04',
+            'gaussian-relighting': 'https://buy.stripe.com/5kQ4gsgoh1U2gVIaNe7kc09',
             'worldlabs-api': 'https://buy.stripe.com/7sYcMYb3X42a0WK7B27kc08',
             'trip-api-unity-hdrp': 'https://buy.stripe.com/placeholder_trip_api_hdrp'
         };
@@ -925,7 +925,7 @@
             } else if (productId === 'gaussian-relighting') {
                 const btn = document.getElementById('addRelightingBtn');
                 if (btn) {
-                    btn.textContent = 'Add to Cart — $299';
+                    btn.textContent = 'Add to Cart — $99';
                     btn.disabled = false;
                 }
             } else if (productId === 'worldlabs-api') {
