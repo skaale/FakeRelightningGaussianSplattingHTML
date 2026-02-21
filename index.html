@@ -165,13 +165,13 @@
             background: #333;
         }
         
-        /* Two Column Layout */
+        /* Layout: Unity Tools full row on top, Technical Articles column below */
         .main-content-grid {
             max-width: 1400px;
             margin: 0 auto;
             padding: 5rem 2rem;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 0;
             align-items: start;
             position: relative;
@@ -180,8 +180,9 @@
             display: flex;
             flex-direction: column;
             gap: 0;
-            padding-right: 4rem;
-            border-right: 2px solid #e0e0e0;
+            padding-bottom: 4rem;
+            margin-bottom: 4rem;
+            border-bottom: 2px solid #e0e0e0;
             position: static;
         }
         .tools-header {
@@ -201,16 +202,18 @@
         }
         .tools-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
             align-items: stretch;
         }
         .articles-column {
             position: static;
-            padding-left: 4rem;
+            padding: 0;
             background: #fafafa;
             padding-top: 1rem;
             padding-bottom: 1rem;
+            padding-left: 0;
+            padding-right: 0;
             border-radius: 4px;
         }
         
@@ -344,6 +347,9 @@
         }
         .articles-list {
             margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 3rem;
         }
         .article-item {
             display: flex;
@@ -353,7 +359,7 @@
             border-bottom: 1px solid #e0e0e0;
             transition: background 0.2s;
         }
-        .article-item:first-child {
+        .article-item:nth-child(-n+2) {
             border-top: 1px solid #e0e0e0;
         }
         .article-item:hover {
@@ -402,18 +408,89 @@
             color: #000;
         }
         
-        /* Full Article Section */
-        .article-full {
-            max-width: 800px;
+        /* Full Articles: two-column grid with expand/collapse */
+        .articles-full-grid {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 4rem 2rem;
-            border-top: 1px solid #eee;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem 3rem;
+            align-items: start;
+        }
+        .article-full {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .article-full-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.5rem 1.5rem 0;
+            cursor: pointer;
+            user-select: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            background: #fff;
+            font: inherit;
+            color: inherit;
+        }
+        .article-full-header:hover {
+            background: #fafafa;
+        }
+        .article-full-header:focus {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        .article-full-header .article-meta {
+            margin-bottom: 0.5rem;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .article-full-header-inner {
+            flex: 1;
+        }
+        .article-full-header h2 {
+            margin-bottom: 0;
+        }
+        .article-full-toggle-icon {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: #999;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+        .article-full.expanded .article-full-toggle-icon {
+            transform: rotate(180deg);
+        }
+        .article-full-body {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: max-height 0.35s ease;
+        }
+        .article-full.collapsed .article-full-body {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+        }
+        .article-full.collapsed .article-full-header {
+            padding-bottom: 1.5rem;
         }
         .article-full h2 {
             font-size: 2rem;
             font-weight: 400;
             margin-bottom: 1.5rem;
             letter-spacing: -0.02em;
+        }
+        .article-full-body h2 {
+            display: none;
         }
         .article-full h3 {
             font-size: 1.25rem;
@@ -445,6 +522,9 @@
             margin-bottom: 2rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid #eee;
+        }
+        .article-full-header .article-meta {
+            margin-bottom: 0.25rem;
         }
         table {
             width: 100%;
@@ -502,18 +582,16 @@
                 padding: 3rem 1.5rem;
             }
             .tools-column {
-                padding-right: 0;
-                border-right: none;
-                border-bottom: 2px solid #e0e0e0;
                 padding-bottom: 3rem;
                 margin-bottom: 3rem;
+                border-bottom: 2px solid #e0e0e0;
             }
             .tools-grid {
                 grid-template-columns: 1fr;
             }
             .articles-column {
                 position: static;
-                padding-left: 0;
+                padding: 0;
                 background: transparent;
                 padding-top: 0;
                 padding-bottom: 0;
@@ -533,13 +611,26 @@
             .articles-section {
                 padding: 0;
             }
+            .articles-list {
+                grid-template-columns: 1fr;
+            }
+            .article-item:nth-child(-n+2) {
+                border-top: none;
+            }
+            .article-item:first-child {
+                border-top: 1px solid #e0e0e0;
+            }
             .article-item:hover {
                 margin: 0;
                 padding-left: 0;
                 padding-right: 0;
             }
+            .articles-full-grid {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
             .article-full {
-                padding: 3rem 1.5rem;
+                padding: 0;
             }
         }
     </style>
@@ -730,14 +821,20 @@
         </div>
     </section>
 
+    <!-- Full Articles: two-column grid with expand/collapse -->
+    <div class="articles-full-grid">
     <!-- Full Article: VHS 1980 VR Effects -->
-    <article class="article-full" id="article-vhs">
-        <div class="article-meta">
-            Unity VR Plugin · Daniel Skaale · <a href="https://x.com/DSkaale" target="_blank" style="color: #000;">@DSkaale</a>
-        </div>
-        
-        <h2>VHS 1980 VR Effects</h2>
-        
+    <article class="article-full expanded" id="article-vhs">
+        <button type="button" class="article-full-header" aria-expanded="true">
+            <div class="article-full-header-inner">
+                <div class="article-meta">
+                    Unity VR Plugin · Daniel Skaale · <a href="https://x.com/DSkaale" target="_blank" style="color: #000;">@DSkaale</a>
+                </div>
+                <h2>VHS 1980 VR Effects</h2>
+            </div>
+            <span class="article-full-toggle-icon">▼</span>
+        </button>
+        <div class="article-full-body">
         <p>
             The VHS 1980 VR Effects package provides authentic 1980s VHS tape aesthetic effects for Unity projects. 
             All effects are designed to work seamlessly in both standard and VR environments, recreating the nostalgic 
@@ -798,16 +895,21 @@
                 <strong>$36</strong> — <a href="Shop.html" style="color: #000;">Buy Now →</a>
             </p>
         </div>
+        </div>
     </article>
 
     <!-- Full Article: Gaussian Splat Editor -->
-    <article class="article-full" id="article-editor">
-        <div class="article-meta">
-            Unity Plugin · Daniel Skaale · <a href="https://x.com/DSkaale" target="_blank" style="color: #000;">@DSkaale</a>
-        </div>
-        
-        <h2>Gaussian Splat Editor for Unity</h2>
-        
+    <article class="article-full expanded" id="article-editor">
+        <button type="button" class="article-full-header" aria-expanded="true">
+            <div class="article-full-header-inner">
+                <div class="article-meta">
+                    Unity Plugin · Daniel Skaale · <a href="https://x.com/DSkaale" target="_blank" style="color: #000;">@DSkaale</a>
+                </div>
+                <h2>Gaussian Splat Editor for Unity</h2>
+            </div>
+            <span class="article-full-toggle-icon">▼</span>
+        </button>
+        <div class="article-full-body">
         <p>
             A powerful Unity Editor plugin designed for editing and manipulating 3D Gaussian Splats 
             directly within the Unity environment. Streamline your workflow with intuitive visual tools 
@@ -849,15 +951,21 @@
                 <strong>$79</strong> — <a href="Shop.html" style="color: #000;">Buy Now →</a>
             </p>
         </div>
+        </div>
     </article>
 
     <!-- Full Article: Fake Relighting -->
-    <article class="article-full" id="article-relighting">
-        <div class="article-meta">
-            Technical Paper · Daniel Skaale · October 2025
-        </div>
-        
-        <h2>Real-Time Fake Relighting for 3D Gaussian Splatting</h2>
+    <article class="article-full expanded" id="article-relighting">
+        <button type="button" class="article-full-header" aria-expanded="true">
+            <div class="article-full-header-inner">
+                <div class="article-meta">
+                    Technical Paper · Daniel Skaale · October 2025
+                </div>
+                <h2>Real-Time Fake Relighting for 3D Gaussian Splatting</h2>
+            </div>
+            <span class="article-full-toggle-icon">▼</span>
+        </button>
+        <div class="article-full-body">
         <p style="color: #666; margin-bottom: 2rem;">A Novel Approach to Dynamic Lighting in Billboard-Based Volumetric Rendering</p>
         
         <h3>Abstract</h3>
@@ -1134,7 +1242,9 @@
                 <p>[4] Olsson, O., et al. (2012). "Clustered Deferred and Forward Shading." <em>High-Performance Graphics 2012</em>.</p>
                 <p>[5] Green, R. (2003). "Spherical Harmonic Lighting: The Gritty Details." <em>GDC 2003</em>.</p>
             </div>
+        </div>
     </article>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -1159,6 +1269,31 @@
         }
         
         document.addEventListener('DOMContentLoaded', updateCartBadge);
+        
+        // Expand/collapse full articles
+        document.querySelectorAll('.article-full-header').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                if (e.target.closest('a')) return;
+                var article = this.closest('.article-full');
+                var expanded = article.classList.toggle('expanded');
+                article.classList.toggle('collapsed', !expanded);
+                this.setAttribute('aria-expanded', expanded);
+            });
+        });
+        // Expand article matching hash on load
+        function expandArticleFromHash() {
+            var id = (location.hash || '').replace(/^#/, '');
+            if (!id) return;
+            var article = document.getElementById(id);
+            if (article && article.classList.contains('article-full')) {
+                article.classList.add('expanded');
+                article.classList.remove('collapsed');
+                var header = article.querySelector('.article-full-header');
+                if (header) header.setAttribute('aria-expanded', 'true');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', expandArticleFromHash);
+        window.addEventListener('hashchange', expandArticleFromHash);
         
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
