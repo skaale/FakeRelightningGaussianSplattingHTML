@@ -301,98 +301,117 @@
             }
         };
         
-        // Get product ID from URL or sessionStorage
-        function getProductId() {
+        // Map incomplete/legacy product params to full product IDs (e.g. Stripe URL typo)
+        const PRODUCT_ID_ALIASES = {
+            'gaussian': 'gaussian-relighting'
+        };
+
+        // Get product ID(s) from URL or sessionStorage. Returns array of product IDs (one or more).
+        function getProductIds() {
             const urlParams = new URLSearchParams(window.location.search);
             const productParam = urlParams.get('product');
             const productsParam = urlParams.get('products');
             
             if (productParam) {
-                return productParam;
-            } else if (productsParam) {
-                // Multiple products - use first one for now
-                return productsParam.split(',')[0];
-            } else {
-                // Try to get from sessionStorage (before it's cleared)
-                const pendingPurchase = sessionStorage.getItem('pendingPurchase');
-                if (pendingPurchase) {
-                    try {
-                        const cart = JSON.parse(pendingPurchase);
-                        if (cart.length > 0) {
-                            return cart[0].id;
-                        }
-                    } catch (e) {
-                        console.error('Error parsing pending purchase:', e);
+                const id = PRODUCT_ID_ALIASES[productParam] || productParam;
+                return id ? [id] : [];
+            }
+            if (productsParam) {
+                return productsParam.split(',').map(function(p) {
+                    return PRODUCT_ID_ALIASES[p.trim()] || p.trim();
+                }).filter(Boolean);
+            }
+            var pendingPurchase = sessionStorage.getItem('pendingPurchase');
+            if (pendingPurchase) {
+                try {
+                    var cart = JSON.parse(pendingPurchase);
+                    if (cart.length > 0) {
+                        return cart.map(function(item) { return item.id; });
                     }
+                } catch (e) {
+                    console.error('Error parsing pending purchase:', e);
                 }
             }
-            
-            // No product identified - do not default to a specific product (would give wrong download)
-            return null;
+            return [];
         }
         
-        // Update page content based on product
+        // Update page content based on product(s)
         function updateSuccessPage() {
-            const productId = getProductId();
-            const product = productId ? PRODUCT_DOWNLOADS[productId] : null;
-            
-            // Clear cart after we've read it (so getProductId could use sessionStorage)
+            var productIds = getProductIds();
+            var products = productIds.map(function(id) { return PRODUCT_DOWNLOADS[id]; }).filter(Boolean);
+            var firstProduct = products[0];
+
+            // Clear cart after we've read it
             localStorage.removeItem('gsplatCart');
             sessionStorage.removeItem('pendingPurchase');
-            
-            if (!product) {
-                // Unknown product - show generic message so we never serve the wrong download
-                const downloadBox = document.querySelector('.download-box');
-                const downloadBtn = document.querySelector('.download-btn');
-                const itemsList = document.querySelector('.info-box ul');
+
+            var downloadBox = document.querySelector('.download-box');
+            var itemsList = document.querySelector('.info-box ul');
+
+            if (!firstProduct) {
                 if (downloadBox) {
-                    const p = downloadBox.querySelector('p');
-                    if (p) p.textContent = 'Your payment was successful. We could not determine which product you purchased. Please contact support with your receipt (order/email) and we will send you the correct download link.';
+                    var p = downloadBox.querySelector('p');
+                    if (p) p.textContent = 'Your payment was successful. We could not determine which product you purchased (often because the checkout link did not include it). Use the option below if you bought Relighting, or contact support with your receipt for any product.';
+                    var downloadBtn = downloadBox.querySelector('.download-btn');
                     if (downloadBtn) {
                         downloadBtn.textContent = 'Contact support for your download';
                         downloadBtn.href = 'mailto:support@simulacrum.dk?subject=Download%20link%20request';
                         downloadBtn.removeAttribute('download');
                     }
+                    // Add prominent Relighting recovery link so customers who bought Relighting can get the download without emailing
+                    var relink = document.createElement('p');
+                    relink.style.marginTop = '1rem';
+                    relink.innerHTML = 'Purchased <strong>Gaussian Splatting Relighting</strong>? <a href="?product=gaussian-relighting" style="color: #000; font-weight: 600;">Click here to get your download →</a>';
+                    downloadBox.appendChild(relink);
                 }
                 if (itemsList) {
                     itemsList.innerHTML = '<li>Include your order or payment email when you contact support</li><li>You will receive the correct download link promptly</li>';
                 }
                 return;
             }
-            
-            // Update download link
-            const downloadBtn = document.querySelector('.download-btn');
-            if (downloadBtn) {
-                downloadBtn.href = product.file;
-                downloadBtn.textContent = `↓ Download ${product.name}`;
-                downloadBtn.download = product.name;
-                
-                // Verify file exists (optional - can be removed if files are always present)
-                fetch(product.file, { method: 'HEAD' })
-                    .then(response => {
-                        if (!response.ok) {
-                            downloadBtn.style.opacity = '0.6';
-                            downloadBtn.title = 'File may not be available yet. Contact support if issue persists.';
-                        }
-                    })
-                    .catch(() => {
-                        // File check failed - still show download button
-                        console.warn('Could not verify file existence:', product.file);
-                    });
+
+            // Single product: keep one download box and one list
+            if (products.length === 1) {
+                var product = firstProduct;
+                var downloadBtn = document.querySelector('.download-btn');
+                if (downloadBtn) {
+                    downloadBtn.href = product.file;
+                    downloadBtn.textContent = '↓ Download ' + product.name;
+                    downloadBtn.download = product.name;
+                    fetch(product.file, { method: 'HEAD' })
+                        .then(function(response) {
+                            if (!response.ok) {
+                                downloadBtn.style.opacity = '0.6';
+                                downloadBtn.title = 'File may not be available yet. Contact support if issue persists.';
+                            }
+                        })
+                        .catch(function() {});
+                }
+                if (downloadBox) {
+                    var desc = downloadBox.querySelector('p');
+                    if (desc) desc.textContent = 'Click below to download your ' + product.title + ' package.';
+                }
+                if (itemsList && product.items) {
+                    itemsList.innerHTML = product.items.map(function(item) { return '<li>' + item + '</li>'; }).join('');
+                }
+                return;
             }
-            
-            // Update product title in description
-            const downloadBox = document.querySelector('.download-box p');
+
+            // Multiple products: show one download box per product
             if (downloadBox) {
-                downloadBox.textContent = `Click below to download your ${product.title} package.`;
+                var parent = downloadBox.parentNode;
+                var newContent = '<h3 style="font-family: \'Space Mono\', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;">Download your files</h3>';
+                products.forEach(function(prod) {
+                    newContent += '<div class="info-box download-box" style="margin-bottom: 1rem;"><h3>' + prod.title + '</h3><p style="margin-bottom: 1rem;">Click below to download.</p><a href="' + prod.file + '" class="download-btn" download="' + prod.name + '">↓ Download ' + prod.name + '</a></div>';
+                });
+                downloadBox.outerHTML = '<div class="info-box">' + newContent + '</div>';
             }
-            
-            // Update items list
-            const itemsList = document.querySelector('.info-box ul');
-            if (itemsList && product.items) {
-                itemsList.innerHTML = product.items.map(item => 
-                    `<li>${item}</li>`
-                ).join('');
+            if (itemsList) {
+                var allItems = [];
+                products.forEach(function(prod) {
+                    if (prod.items) allItems = allItems.concat(prod.items);
+                });
+                itemsList.innerHTML = allItems.length ? allItems.map(function(item) { return '<li>' + item + '</li>'; }).join('') : '<li>See download boxes above for each product.</li>';
             }
         }
         
