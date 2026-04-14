@@ -60,6 +60,16 @@
         .nav-links a:hover {
             text-decoration: underline;
         }
+        .nav-inactive {
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 0.02em;
+            cursor: not-allowed;
+            user-select: none;
+        }
+        .mobile-nav .nav-inactive {
+            font-size: 0.9rem;
+        }
         .cart-link {
             display: flex;
             align-items: center;
@@ -257,21 +267,6 @@
             color: #999;
             font-family: 'Space Mono', monospace;
         }
-        .video-tuts-link {
-            display: inline-block;
-            margin-top: 0.5rem;
-            padding: 0.35rem 0.6rem;
-            background: #000;
-            color: #fff;
-            font-size: 0.8rem;
-            text-decoration: none;
-            font-family: 'Space Mono', monospace;
-        }
-        .video-tuts-link:hover {
-            color: #fff;
-            text-decoration: none;
-        }
-        
         /* Cart Section */
         .cart-section {
             max-width: 800px;
@@ -460,7 +455,7 @@
                 <a href="index.html">Home</a>
                 <a href="index.html#articles">Articles</a>
                 <a href="SPAG.html">SPAG</a>
-                <a href="VideoTuts.html">Video Tuts</a>
+                <span class="nav-inactive" aria-disabled="true">Video Tuts</span>
                 <a href="about.html">About</a>
                 <a href="#cart" class="cart-link">
                     Cart <span class="cart-count hidden" id="cartBadge">0</span>
@@ -472,7 +467,7 @@
             <a href="index.html">Home</a>
             <a href="index.html#articles">Articles</a>
             <a href="SPAG.html">SPAG</a>
-            <a href="VideoTuts.html">Video Tuts</a>
+            <span class="nav-inactive" aria-disabled="true">Video Tuts</span>
             <a href="about.html">About</a>
             <a href="#cart">Cart</a>
         </div>
@@ -520,7 +515,6 @@
             <button class="add-btn" id="addWorldlabsBtn" onclick="addToCart('worldlabs-api', 'Worldlabs Unity API', 29)">
                 Add to Cart — $29
             </button>
-            <p><a href="VideoTuts.html#worldlabs-api" class="video-tuts-link">Video tutorials →</a></p>
             <p class="product-meta">Unity 2021.3 LTS+ · Cross-platform · Lifetime updates</p>
         </div>
     </section>
@@ -559,7 +553,6 @@
             <button class="add-btn" id="addVhsBtn" onclick="addToCart('vhs-vr-effects', 'VHS 1980 VR Effects', 36)">
                 Add to Cart — $36
             </button>
-            <p><a href="VideoTuts.html#vhs-vr-effects" class="video-tuts-link">Video tutorials →</a></p>
             <p class="product-meta">Unity 6.x LTS+ Rendermode - Multi Pass · URP for PC-VR   · Lifetime updates</p>
         </div>
     </section>
@@ -612,7 +605,6 @@
             <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Splat Box Editor', 199)">
                 Add to Cart — $199
             </button>
-            <p><a href="VideoTuts.html#unity-gsplat-editor" class="video-tuts-link">Video tutorials →</a></p>
             <p class="product-meta">Unity 6.3 LTS · URP (default render pipeline) · Lifetime updates</p>
         </div>
     </section>

@@ -62,6 +62,16 @@
         .nav-links a:hover {
             text-decoration: underline;
         }
+        .nav-inactive {
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 0.02em;
+            cursor: not-allowed;
+            user-select: none;
+        }
+        .mobile-nav .nav-inactive {
+            font-size: 0.9rem;
+        }
         .cart-link {
             display: flex;
             align-items: center;
@@ -645,7 +655,7 @@
                 <a href="#articles">Articles</a>
                 <a href="#article-relighting">Relighting Paper</a>
                 <a href="SPAG.html">SPAG</a>
-                <!-- <a href="VideoTuts.html">Video Tuts</a> -->
+                <span class="nav-inactive" aria-disabled="true">Video Tuts</span>
                 <a href="about.html">About</a>
                 <a href="Shop.html#cart" class="cart-link">
                     Cart <span class="cart-count hidden" id="cartBadge">0</span>
@@ -658,7 +668,7 @@
             <a href="#articles">Articles</a>
             <a href="#article-relighting">Relighting Paper</a>
             <a href="SPAG.html">SPAG</a>
-            <!-- <a href="VideoTuts.html">Video Tuts</a> -->
+            <span class="nav-inactive" aria-disabled="true">Video Tuts</span>
             <a href="about.html">About</a>
             <a href="Shop.html">Cart</a>
         </div>
