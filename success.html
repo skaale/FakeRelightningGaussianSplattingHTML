@@ -256,24 +256,14 @@
                 ]
             },
             'unity-gsplat-editor': {
-                file: 'Products/GaussianSplatEditor/GaussianSplatEditor.zip',
-                name: 'GaussianSplatEditor.zip',
-                title: 'Gaussian Splat Editor',
+                file: 'Products/CombinedGS/SplatBoxCombined.zip',
+                name: 'SplatBoxCombined.zip',
+                title: 'Splat Box Editor',
+                demoLink: 'https://drive.google.com/file/d/1UMPsza895R__Obrvb485KDVr88C4QKRg/view?usp=drive_link',
                 items: [
-                    'GaussianSplatEditor.zip',
-                    'Sample scenes',
+                    'Splat Box Editor with Relighting.unitypackage',
+                    'Full demo scene included',
                     'Documentation & API reference',
-                    'License file'
-                ]
-            },
-            'gaussian-relighting': {
-                file: 'Products/Relightning/Relighting.zip',
-                name: 'Relighting.zip',
-                title: 'Gaussian Splatting Relighting',
-                items: [
-                    'Relighting.zip',
-                    'Shader files',
-                    'Documentation & examples',
                     'License file'
                 ]
             },
@@ -358,11 +348,6 @@
                         downloadBtn.href = 'mailto:support@simulacrum.dk?subject=Download%20link%20request';
                         downloadBtn.removeAttribute('download');
                     }
-                    // Add prominent Relighting recovery link so customers who bought Relighting can get the download without emailing
-                    var relink = document.createElement('p');
-                    relink.style.marginTop = '1rem';
-                    relink.innerHTML = 'Purchased <strong>Gaussian Splatting Relighting</strong>? <a href="?product=gaussian-relighting" style="color: #000; font-weight: 600;">Click here to get your download →</a>';
-                    downloadBox.appendChild(relink);
                 }
                 if (itemsList) {
                     itemsList.innerHTML = '<li>Include your order or payment email when you contact support</li><li>You will receive the correct download link promptly</li>';
@@ -390,6 +375,18 @@
                 if (downloadBox) {
                     var desc = downloadBox.querySelector('p');
                     if (desc) desc.textContent = 'Click below to download your ' + product.title + ' package.';
+                    
+                    // Add demo link if available
+                    if (product.demoLink) {
+                        var demoLinkEl = document.createElement('a');
+                        demoLinkEl.href = product.demoLink;
+                        demoLinkEl.className = 'download-btn';
+                        demoLinkEl.textContent = '↓ Download Demo Scene (Google Drive)';
+                        demoLinkEl.target = '_blank';
+                        demoLinkEl.style.marginTop = '1rem';
+                        demoLinkEl.style.background = '#2196F3';
+                        downloadBox.appendChild(demoLinkEl);
+                    }
                 }
                 if (itemsList && product.items) {
                     itemsList.innerHTML = product.items.map(function(item) { return '<li>' + item + '</li>'; }).join('');
