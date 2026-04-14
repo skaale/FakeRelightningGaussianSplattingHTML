@@ -576,11 +576,11 @@
         <div class="product-info">
             <h2>Unity Editor Plugin</h2>
             <h3>Splat Box Editor</h3>
-            <div class="product-price">$79</div>
+            <div class="product-price">$199</div>
             <p class="product-desc">
                 A powerful Unity Editor plugin for editing and manipulating 3D Gaussian Splats 
                 directly within Unity. Intuitive tools for splat selection, transformation, 
-                and real-time preview.
+                and real-time preview. Now includes professional relighting system with dynamic lighting support.
             </p>
             <ul class="feature-list">
                 <li>Visual splat selection & manipulation</li>
@@ -588,7 +588,9 @@
                 <li>Import/Export PLY and SPZ formats</li>
                 <li>Batch editing operations</li>
                 <li>Transform gizmos & precision tools</li>
-                <li style="color: #666; font-style: italic;">Windows-based Editor tool (no offical VR standalone support)</li>
+                <li>Real-time dynamic lighting (directional, point, spot, planar)</li>
+                <li>Shadow mapping & SSAO integration</li>
+                <li>Full demo scene included</li>
             </ul>
             <div style="background: #e8f4f8; border-left: 3px solid #2196F3; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Tested on Unity 6.3.x:</strong> This Unity Editor Plugin has been tested on Unity 6.x. Compatibility with other Unity versions may vary.
@@ -599,13 +601,15 @@
             <div style="background: #f0f0f0; border-left: 3px solid #666; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Precompiled Binaries:</strong> This package includes precompiled binaries. For full source code access, please contact me for a price via <a href="about.html" style="color: #000; text-decoration: underline;">About page</a>.
             </div>
-            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Gaussian Splat Editor', 79)">
-                Add to Cart — $79
+            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Splat Box Editor', 199)">
+                Add to Cart — $199
             </button>
             <p><a href="VideoTuts.html#unity-gsplat-editor" class="video-tuts-link">Video tutorials →</a></p>
             <p class="product-meta">Unity 6.3 LTS · URP (default render pipeline) · Lifetime updates</p>
         </div>
     </section>
+
+    <!-- Product: Gaussian Splatting Relighting - REMOVED, now included in Splat Box Editor -->
 
     <!-- Product: TRIPO API UNITY HDRP (hidden for now) -->
     <div style="display: none;">
@@ -641,50 +645,7 @@
     </section>
     </div>
 
-    <!-- Product: Gaussian Splatting Relighting -->
-    <section class="product-section" id="gaussian-relighting" style="border-top: 1px solid #e0e0e0;">
-        <div class="product-media">
-            <div style="position: relative; width: 100%;">
-                <img src="Video/Relighting/relighting-ui.png" alt="Gaussian Splatting Relighting — Custom Light Manager" class="product-image" style="object-fit: contain; width: 100%; height: auto; background: #2d2d2d;">
-                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: #000; color: #fff; padding: 0.5rem 1rem; font-size: 0.75rem; font-family: 'Space Mono', monospace; letter-spacing: 0.05em; text-align: center;">Lifetime support</div>
-            </div>
-            <video class="product-video" controls muted loop>
-                <source src="Video/relight/Re-lightDemo.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        <div class="product-info">
-            <h2>Unity Shader Package</h2>
-            <h3>Gaussian Splatting Relighting</h3>
-            <div class="product-price">$99</div>
-            <p class="product-desc">
-                A professional relighting plugin built from the ground up on the research paper 
-                <em>A Novel Approach to Dynamic Lighting in Billboard-Based Volumetric Rendering</em>. 
-                Real-time dynamic lighting for 3D Gaussian Splats without explicit surface normals—directional, 
-                point, spot, and planar lights with custom attenuation models optimized for billboard-based rendering.
-            </p>
-            <ul class="feature-list">
-                <li>View-as-normal approximation for implicit lighting</li>
-                <li>Directional, point, spot, and planar light support</li>
-                <li>Custom distance and angular attenuation</li>
-                <li>Shadow mapping integration</li>
-                <li>SSAO compatibility</li>
-                <li>GPU-accelerated compute shader implementation</li>
-                <li>Multiple dynamic lights support</li>
-            </ul>
-            <div style="background: #f0f0f0; border-left: 3px solid #000; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
-                <strong>Requirement:</strong> This relighting plugin works only with the <a href="#unity-gsplat-editor" style="color: #000; text-decoration: underline;">Splat Box Editor</a> plugin. You need both for full functionality.
-            </div>
-            <div style="background: #f0f0f0; border-left: 3px solid #000; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
-                <strong>Source code:</strong> If you need the source code for Relighting, please <a href="about.html" style="color: #000; text-decoration: underline;">contact me for a price</a>.
-            </div>
-            <button class="add-btn" id="addRelightingBtn" onclick="addToCart('gaussian-relighting', 'Gaussian Splatting Relighting', 99)">
-                Add to Cart — $99
-            </button>
-            <p><a href="VideoTuts.html#gaussian-relighting" class="video-tuts-link">Video tutorials →</a></p>
-            <p class="product-meta">Unity 6.3 LTS+ · URP · Works only with Splat Box Editor · Lifetime updates</p>
-        </div>
-    </section>
+    <!-- Product: Gaussian Splatting Relighting - REMOVED, now included in Splat Box Editor -->
 
     <!-- Cart -->
     <section class="cart-section" id="cart">
@@ -723,8 +684,6 @@
         const STRIPE_PAYMENT_LINKS = {
             'vhs-vr-effects': 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01',
             'unity-gsplat-editor': 'https://buy.stripe.com/14A4gseg9fKS5d0bRi7kc06',
-            // Relighting: In Stripe Dashboard set success URL to: https://www.simulacrum.dk/success.html?product=gaussian-relighting
-            'gaussian-relighting': 'https://buy.stripe.com/5kQ4gsgoh1U2gVIaNe7kc09',
             'worldlabs-api': 'https://buy.stripe.com/7sYcMYb3X42a0WK7B27kc08',
             'trip-api-unity-hdrp': 'https://buy.stripe.com/placeholder_trip_api_hdrp'
         };
@@ -734,7 +693,6 @@
             'worldlabs-api': 'Video/Worldlabs/promoImage.png',
             'vhs-vr-effects': '1980Promo.jpg',
             'unity-gsplat-editor': 'Video/GSEditor/editor.png',
-            'gaussian-relighting': 'Video/Relighting/relighting-ui.png',
             'trip-api-unity-hdrp': null
         };
         
@@ -751,22 +709,12 @@
                 ]
             },
             'unity-gsplat-editor': {
-                file: 'Products/GaussianSplatEditor/GaussianSplatEditor.zip', // TODO: Update path when file exists
-                name: 'GaussianSplatEditor.zip',
+                file: 'Products/CombinedGS/SplatBoxCombined.zip',
+                name: 'SplatBoxCombined.zip',
                 items: [
-                    'Gaussian Splat Editor.unitypackage',
-                    'Sample scenes',
+                    'Splat Box Editor with Relighting.unitypackage',
+                    'Full demo scene included',
                     'Documentation & API reference',
-                    'License file'
-                ]
-            },
-            'gaussian-relighting': {
-                file: 'Products/Relightning/Relighting.zip',
-                name: 'Relighting.zip',
-                items: [
-                    'Gaussian Splatting Relighting.unitypackage',
-                    'Shader files',
-                    'Documentation & examples',
                     'License file'
                 ]
             },
@@ -911,12 +859,6 @@
                     btn.textContent = '✓ Added';
                     btn.disabled = true;
                 }
-            } else if (productId === 'gaussian-relighting') {
-                const btn = document.getElementById('addRelightingBtn');
-                if (btn) {
-                    btn.textContent = '✓ Added';
-                    btn.disabled = true;
-                }
             } else if (productId === 'worldlabs-api') {
                 const btn = document.getElementById('addWorldlabsBtn');
                 if (btn) {
@@ -943,12 +885,6 @@
                 const btn = document.getElementById('addVhsBtn');
                 if (btn) {
                     btn.textContent = 'Add to Cart — $36';
-                    btn.disabled = false;
-                }
-            } else if (productId === 'gaussian-relighting') {
-                const btn = document.getElementById('addRelightingBtn');
-                if (btn) {
-                    btn.textContent = 'Add to Cart — $99';
                     btn.disabled = false;
                 }
             } else if (productId === 'worldlabs-api') {
@@ -1028,7 +964,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateCartUI();
             const cart = getCart();
-            const productIds = ['unity-gsplat-editor', 'vhs-vr-effects', 'gaussian-relighting', 'worldlabs-api', 'trip-api-unity-hdrp'];
+            const productIds = ['unity-gsplat-editor', 'vhs-vr-effects', 'worldlabs-api', 'trip-api-unity-hdrp'];
             productIds.forEach(id => {
                 if (cart.find(item => item.id === id)) {
                     updateAddToCartButton(id);
@@ -1037,7 +973,7 @@
             // Handle anchor links for smooth scrolling
             if (window.location.hash) {
                 const hash = window.location.hash.substring(1);
-                const productIds = ['worldlabs-api', 'vhs-vr-effects', 'unity-gsplat-editor', 'gaussian-relighting', 'trip-api-unity-hdrp'];
+                const productIds = ['worldlabs-api', 'vhs-vr-effects', 'unity-gsplat-editor', 'trip-api-unity-hdrp'];
                 
                 if (hash === 'cart') {
                     setTimeout(() => document.getElementById('cart').scrollIntoView({ behavior: 'smooth' }), 100);
