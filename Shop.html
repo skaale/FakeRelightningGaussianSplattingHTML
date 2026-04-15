@@ -191,6 +191,41 @@
             background: #000;
             object-fit: cover;
         }
+        /* Relighting promo: image fills */
+        .relighting-promo-wrap {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: #2d2d2d;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+        /* Splat Box Editor section: sized to align with info column */
+        #unity-gsplat-editor .product-image {
+            height: 200px;
+        }
+        #unity-gsplat-editor .product-video {
+            height: 240px;
+        }
+        .relighting-promo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .relighting-promo-wrap .promo-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #2196F3;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
         /* Worldlabs promo: match video width exactly */
         #worldlabs-api .product-image {
             width: 100%;
@@ -485,7 +520,7 @@
     <section class="product-section" id="worldlabs-api">
         <div class="product-media">
             <img src="Video/Worldlabs/squarePromo.png" alt="Worldlabs Unity API" class="product-image" style="object-fit: contain; width: 100%; height: auto; background: #2d2d2d;">
-            <video class="product-video" controls muted loop>
+            <video class="product-video" controls muted loop playsinline preload="metadata">
                 <source src="Video/Worldlabs/WorklabsAPI.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -523,7 +558,7 @@
     <section class="product-section" id="vhs-vr-effects" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
             <img src="1980Promo.jpg" alt="VHS 1980 VR Effects" class="product-image" style="object-fit: contain; width: 100%; height: auto; background: #000;">
-            <video class="product-video" controls muted loop>
+            <video class="product-video" controls muted loop playsinline preload="metadata">
                 <source src="Video/VRVHS.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -560,16 +595,16 @@
     <!-- Product: Gaussian Splat Editor -->
     <section class="product-section" id="unity-gsplat-editor" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
-            <img src="Video/GSEditor/editor.png" alt="Splat Box Editor" class="product-image" style="object-fit: contain; width: 100%; height: 180px; background: #f5f5f5;">
-            <div style="position: relative; width: 100%;">
-                <img src="Video/Relighting/relighting-ui.png" alt="Relighting Plugin Interface" class="product-image" style="object-fit: contain; width: 100%; height: 180px; background: #2d2d2d; margin-top: 1rem;">
-                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: #2196F3; color: #fff; padding: 0.5rem 1rem; font-size: 0.75rem; font-family: 'Space Mono', monospace; letter-spacing: 0.05em; text-align: center;">Now Included: Re-lighting Plugin</div>
+            <img src="Video/GSEditor/editor.png" alt="Splat Box Editor" class="product-image" style="object-fit: contain; width: 100%; background: #f5f5f5;">
+            <div class="relighting-promo-wrap">
+                <img src="Video/Relighting/relighting-ui.png" alt="Relighting Plugin Interface">
+                <div class="promo-label">Now Included: Re-lighting Plugin</div>
             </div>
-            <video class="product-video" controls muted loop style="height: 240px;">
+            <video class="product-video" controls muted loop playsinline preload="metadata">
                 <source src="Video/GSEditor/promoGSeditor.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <video class="product-video" controls muted loop style="margin-top: 1rem; height: 240px;">
+            <video class="product-video" controls muted loop playsinline preload="metadata">
                 <source src="Video/relight/Re-lightDemo.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -961,6 +996,25 @@
             document.getElementById('mobileNav').classList.toggle('active');
         }
         
+        function initMobileVideoAutoplay() {
+            if (window.innerWidth > 768) return;
+            const videos = document.querySelectorAll('.product-video');
+            if (!videos.length || !('IntersectionObserver' in window)) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.4 });
+
+            videos.forEach(v => observer.observe(v));
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             updateCartUI();
             const cart = getCart();
@@ -970,6 +1024,9 @@
                     updateAddToCartButton(id);
                 }
             });
+
+            initMobileVideoAutoplay();
+
             // Handle anchor links for smooth scrolling
             if (window.location.hash) {
                 const hash = window.location.hash.substring(1);
