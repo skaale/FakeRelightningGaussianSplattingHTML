@@ -756,7 +756,12 @@
                     <div class="featured-content">
                     <h2>Available Now</h2>
                     <h3>Splat Box Editor (included Re-lighting)</h3>
-                    <div class="price">$199</div>
+                    <div class="price" id="splatBoxFeaturedPrice">
+                        <span style="color: #777; font-size: 0.65em; text-decoration: line-through;">$199</span>
+                        $99.50
+                        <span style="display: inline-block; padding: 0.15rem 0.4rem; background: #000; color: #fff; font-size: 0.45em; vertical-align: middle;">50% OFF</span>
+                    </div>
+                    <p id="splatBoxFeaturedSale" style="margin-top: -0.75rem; font-family: 'Space Mono', monospace; font-size: 0.72rem;">New Year sale ends December 31, 2026</p>
                     <p>
                         Unity Editor plugin for editing 3D Gaussian Splats with professional relighting system included. 
                         Visual tools for selection, transformation, real-time preview, dynamic lighting, and tilt-shift effects.
@@ -1316,6 +1321,15 @@
             }
         }
         document.addEventListener('DOMContentLoaded', expandArticleFromHash);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (Date.now() >= Date.UTC(2027, 0, 1)) {
+                var price = document.getElementById('splatBoxFeaturedPrice');
+                var sale = document.getElementById('splatBoxFeaturedSale');
+                if (price) price.textContent = '$199';
+                if (sale) sale.hidden = true;
+            }
+        });
         window.addEventListener('hashchange', expandArticleFromHash);
         
         // Smooth scroll for anchor links

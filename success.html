@@ -95,6 +95,15 @@
             color: #555;
             margin-bottom: 2rem;
         }
+        .sale-confirmation {
+            display: none;
+            margin-top: -1rem;
+            padding: 0.75rem;
+            border: 1px solid #000;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: #000;
+        }
         
         .info-box {
             text-align: left;
@@ -209,6 +218,7 @@
             <div class="success-icon">✓</div>
             <h1>Thank You</h1>
             <p>Your payment was successful. Download your files below.</p>
+            <p class="sale-confirmation" id="saleConfirmation">Splat Box Editor New Year sale — 50% off ($99.50)</p>
             
             <div class="info-box download-box">
                 <h3>Download Your Files</h3>
@@ -319,6 +329,7 @@
         const PRODUCT_ID_ALIASES = {
             'gaussian': 'gaussian-relighting'
         };
+        const SPLAT_BOX_SALE_END = Date.UTC(2027, 0, 1);
 
         // Get product ID(s) from URL or sessionStorage. Returns array of product IDs (one or more).
         function getProductIds() {
@@ -354,6 +365,14 @@
             var productIds = getProductIds();
             var products = productIds.map(function(id) { return PRODUCT_DOWNLOADS[id]; }).filter(Boolean);
             var firstProduct = products[0];
+            var saleConfirmation = document.getElementById('saleConfirmation');
+            if (
+                saleConfirmation &&
+                productIds.indexOf('unity-gsplat-editor') !== -1 &&
+                Date.now() < SPLAT_BOX_SALE_END
+            ) {
+                saleConfirmation.style.display = 'block';
+            }
 
             // Clear cart after we've read it
             localStorage.removeItem('gsplatCart');

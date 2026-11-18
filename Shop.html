@@ -253,6 +253,27 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
+        .regular-price {
+            color: #777;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            text-decoration: line-through;
+        }
+        .sale-badge {
+            display: inline-block;
+            margin-left: 0.5rem;
+            padding: 0.2rem 0.45rem;
+            background: #000;
+            color: #fff;
+            font-size: 0.65rem;
+            vertical-align: middle;
+        }
+        .sale-deadline {
+            margin: -0.5rem 0 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            color: #555;
+        }
         .product-desc {
             color: #555;
             margin-bottom: 1rem;
@@ -550,7 +571,7 @@
             <button class="add-btn" id="addWorldlabsBtn" onclick="addToCart('worldlabs-api', 'Worldlabs Unity API', 29)">
                 Add to Cart — $29
             </button>
-            <p class="product-meta">Unity 2021.3 LTS+ · Cross-platform · Lifetime updates</p>
+            <p class="product-meta">Unity 2021.3 LTS+ · Cross-platform </p>
         </div>
     </section>
 
@@ -612,7 +633,12 @@
         <div class="product-info">
             <h2>Unity Editor Plugin</h2>
             <h3>Splat Box Editor (included Re-lighting)</h3>
-            <div class="product-price">$199</div>
+            <div class="product-price" id="splatBoxPrice">
+                <span class="regular-price">$199</span>
+                <span>$99.50</span>
+                <span class="sale-badge">50% OFF</span>
+            </div>
+            <p class="sale-deadline" id="splatBoxSaleDeadline">New Year sale ends December 31, 2026</p>
             <p class="product-desc">
                 A powerful Unity Editor plugin for editing and manipulating 3D Gaussian Splats 
                 directly within Unity. Intuitive tools for splat selection, transformation, 
@@ -639,8 +665,8 @@
             <div style="background: #f0f0f0; border-left: 3px solid #666; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Full Source Code Included:</strong> The complete source code is included with your purchase.
             </div>
-            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Splat Box Editor', 199)">
-                Add to Cart — $199
+            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Splat Box Editor', getSplatBoxPrice())">
+                Add to Cart — $99.50
             </button>
             <p class="product-meta">Unity 6.5 · URP (default render pipeline) · Full source code · Lifetime updates</p>
         </div>
@@ -781,13 +807,30 @@
     </footer>
 
     <script>
-        // Stripe Payment Links - Replace with your actual Stripe Payment Link URLs
+        const SPLAT_BOX_REGULAR_PRICE = 199;
+        const SPLAT_BOX_SALE_PRICE = 99.50;
+        const SPLAT_BOX_SALE_END = Date.UTC(2027, 0, 1);
+        // Add the new $99.50 Stripe Payment Link here after signing in to Stripe.
+        const SPLAT_BOX_SALE_PAYMENT_LINK = '';
+
+        function isSplatBoxSaleActive() {
+            return Date.now() < SPLAT_BOX_SALE_END;
+        }
+
+        function getSplatBoxPrice() {
+            return isSplatBoxSaleActive() ? SPLAT_BOX_SALE_PRICE : SPLAT_BOX_REGULAR_PRICE;
+        }
+
+        function formatPrice(price) {
+            return Number.isInteger(price) ? '$' + price : '$' + price.toFixed(2);
+        }
+
+        // Stripe Payment Links - regular prices
         // 
         // To set up Stripe Payment Links:
         // 1. Go to Stripe Dashboard > Products > Payment Links
         // 2. Create a new Payment Link for each product:
-        //    - Gaussian Splat Editor: $2
-        //    - Gaussian Splatting Relighting: $99
+        //    - Splat Box Editor: $199 regular / $99.50 sale
         //    - Worldlabs Unity API: $29
         // 3. Set Success URL to: https://simulacrum.dk/success.html?product={PRODUCT_ID}
         // 4. Copy the Payment Link URL and paste it below
@@ -800,6 +843,13 @@
             'mixamo-splat-rig': 'https://buy.stripe.com/placeholder_mixamo_splat_rig',
             'trip-api-unity-hdrp': 'https://buy.stripe.com/placeholder_trip_api_hdrp'
         };
+
+        function getStripePaymentLink(productId) {
+            if (productId === 'unity-gsplat-editor' && isSplatBoxSaleActive()) {
+                return SPLAT_BOX_SALE_PAYMENT_LINK;
+            }
+            return STRIPE_PAYMENT_LINKS[productId];
+        }
         
         // Product thumbnail images for cart
         const PRODUCT_IMAGES = {
@@ -879,7 +929,13 @@
         };
         
         function getCart() {
-            return JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+            const cart = JSON.parse(localStorage.getItem('gsplatCart') || '[]');
+            return cart.map(item => {
+                if (item.id === 'unity-gsplat-editor') {
+                    return { ...item, price: getSplatBoxPrice() };
+                }
+                return item;
+            });
         }
         
         function saveCart(cart) {
@@ -1028,7 +1084,7 @@
             if (productId === 'unity-gsplat-editor') {
                 const btn = document.getElementById('addToCartBtn');
                 if (btn) {
-                    btn.textContent = 'Add to Cart — $79';
+                    btn.textContent = 'Add to Cart — ' + formatPrice(getSplatBoxPrice());
                     btn.disabled = false;
                 }
             } else if (productId === 'vhs-vr-effects') {
@@ -1081,7 +1137,12 @@
             // For single product, go directly to that product's checkout
             if (cart.length === 1) {
                 const productId = cart[0].id;
-                const stripeUrl = STRIPE_PAYMENT_LINKS[productId];
+                const stripeUrl = getStripePaymentLink(productId);
+
+                if (productId === 'unity-gsplat-editor' && isSplatBoxSaleActive() && !stripeUrl) {
+                    alert('The 50% off Stripe checkout is being configured. Please try again shortly or contact support.');
+                    return;
+                }
                 
                 if (stripeUrl && stripeUrl.includes('placeholder')) {
                     alert('Payment link not configured. Please contact support.');
@@ -1099,7 +1160,7 @@
             } else {
                 // Multiple products - redirect to first product (or implement multi-product checkout)
                 const productId = cart[0].id;
-                const stripeUrl = STRIPE_PAYMENT_LINKS[productId];
+                const stripeUrl = getStripePaymentLink(productId);
                 if (stripeUrl) {
                     // Note: For multiple products, you may need to create a custom checkout session
                     // For now, redirecting to first product's payment link
@@ -1142,7 +1203,21 @@
             videos.forEach(v => observer.observe(v));
         }
 
+        function updateSplatBoxSaleUI() {
+            if (isSplatBoxSaleActive()) return;
+
+            const priceEl = document.getElementById('splatBoxPrice');
+            const deadlineEl = document.getElementById('splatBoxSaleDeadline');
+            const button = document.getElementById('addToCartBtn');
+            if (priceEl) priceEl.textContent = formatPrice(SPLAT_BOX_REGULAR_PRICE);
+            if (deadlineEl) deadlineEl.hidden = true;
+            if (button && !button.disabled) {
+                button.textContent = 'Add to Cart — ' + formatPrice(SPLAT_BOX_REGULAR_PRICE);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            updateSplatBoxSaleUI();
             updateCartUI();
             const cart = getCart();
             const productIds = ['unity-gsplat-editor', 'vhs-vr-effects', 'worldlabs-api', 'smart-decimation', 'mixamo-splat-rig', 'trip-api-unity-hdrp'];
