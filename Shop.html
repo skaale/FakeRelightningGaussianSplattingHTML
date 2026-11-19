@@ -810,8 +810,7 @@
         const SPLAT_BOX_REGULAR_PRICE = 199;
         const SPLAT_BOX_SALE_PRICE = 99.50;
         const SPLAT_BOX_SALE_END = Date.UTC(2027, 0, 1);
-        // Add the new $99.50 Stripe Payment Link here after signing in to Stripe.
-        const SPLAT_BOX_SALE_PAYMENT_LINK = '';
+        const SPLAT_BOX_SALE_PAYMENT_LINK = 'https://buy.stripe.com/28EaEQ0pj9mu34S8F67kc0c';
 
         function isSplatBoxSaleActive() {
             return Date.now() < SPLAT_BOX_SALE_END;
@@ -822,19 +821,11 @@
         }
 
         function formatPrice(price) {
-            return Number.isInteger(price) ? '$' + price : '$' + price.toFixed(2);
+            return Number.isInteger(price) ? '$' + price : '$' + Number(price).toFixed(2);
         }
 
-        // Stripe Payment Links - regular prices
-        // 
-        // To set up Stripe Payment Links:
-        // 1. Go to Stripe Dashboard > Products > Payment Links
-        // 2. Create a new Payment Link for each product:
-        //    - Splat Box Editor: $199 regular / $99.50 sale
-        //    - Worldlabs Unity API: $29
-        // 3. Set Success URL to: https://simulacrum.dk/success.html?product={PRODUCT_ID}
-        // 4. Copy the Payment Link URL and paste it below
-        //
+        // Stripe Payment Links
+        // Success URL must include ?product={PRODUCT_ID}
         const STRIPE_PAYMENT_LINKS = {
             'vhs-vr-effects': 'https://buy.stripe.com/14A3co7RL9mufRE2gI7kc01',
             'unity-gsplat-editor': 'https://buy.stripe.com/9B63coc819mufRE6wY7kc0a',
@@ -880,6 +871,7 @@
                     'Splat Box Editor with Relighting.unitypackage',
                     'Full source code',
                     'Full demo scene included',
+                    'Splat Box Best Practices and Photoshop for Splats (PDF)',
                     'Documentation & API reference',
                     'License file'
                 ]
@@ -1027,7 +1019,7 @@
                             ${thumbHtml}
                             <div>
                                 <div class="cart-item-name">${item.name}</div>
-                                <div class="cart-item-price">$${item.price}</div>
+                                <div class="cart-item-price">${formatPrice(item.price)}</div>
                             </div>
                         </div>
                         <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Remove</button>
@@ -1035,7 +1027,7 @@
                 `;
             });
             itemsEl.innerHTML = html;
-            totalEl.textContent = '$' + total;
+            totalEl.textContent = formatPrice(total);
             
             cart.forEach(item => updateAddToCartButton(item.id));
         }
@@ -1152,7 +1144,7 @@
                 if (stripeUrl) {
                     // Redirect to Stripe Payment Link
                     // Note: Success URL must be configured in Stripe Dashboard for each Payment Link
-                    // Set it to: https://simulacrum.dk/success.html?product={product-id}
+                    // Set it to: https://www.simulacrum.dk/success.html?product={product-id}
                     window.location.href = stripeUrl;
                 } else {
                     alert('Payment link not found for this product. Please contact support.');
@@ -1161,6 +1153,10 @@
                 // Multiple products - redirect to first product (or implement multi-product checkout)
                 const productId = cart[0].id;
                 const stripeUrl = getStripePaymentLink(productId);
+                if (productId === 'unity-gsplat-editor' && isSplatBoxSaleActive() && !stripeUrl) {
+                    alert('The 50% off Stripe checkout is being configured. Please try again shortly or contact support.');
+                    return;
+                }
                 if (stripeUrl) {
                     // Note: For multiple products, you may need to create a custom checkout session
                     // For now, redirecting to first product's payment link
