@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop — Simulacrum Inc</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -200,12 +200,16 @@
             border: 1px solid #e0e0e0;
             overflow: hidden;
         }
-        /* Splat Box Editor section: sized to align with info column */
+        /* SplatBox v1.3 section: let full interface screenshot display cleanly */
         #unity-gsplat-editor .product-image {
-            height: 200px;
+            height: auto;
+            background: #181F29;
         }
         #unity-gsplat-editor .product-video {
             height: 240px;
+        }
+        #unity-gsplat-editor .feature-list li {
+            font-weight: 700;
         }
         .relighting-promo-wrap img {
             width: 100%;
@@ -613,10 +617,10 @@
         </div>
     </section>
 
-    <!-- Product: Gaussian Splat Editor -->
+    <!-- Product: SplatBox v1.3 -->
     <section class="product-section" id="unity-gsplat-editor" style="border-top: 1px solid #e0e0e0;">
         <div class="product-media">
-            <img src="Video/GSEditor/editor.png" alt="Splat Box Editor" class="product-image" style="object-fit: contain; width: 100%; background: #f5f5f5;">
+            <img src="Video/GSEditor/splatbox-1.3-ui.png" alt="SplatBox v1.3 Interface" class="product-image" style="object-fit: contain; width: 100%; height: auto; background: #181F29;">
             <div class="relighting-promo-wrap">
                 <img src="Video/Relighting/relighting-ui.png" alt="Relighting Plugin Interface">
                 <div class="promo-label">Now Included: Re-lighting Plugin</div>
@@ -631,8 +635,8 @@
             </video>
         </div>
         <div class="product-info">
-            <h2>Unity Editor Plugin</h2>
-            <h3>Splat Box Editor (included Re-lighting)</h3>
+            <h2>Unity Editor Plugin · v1.3</h2>
+            <h3>SplatBox v1.3 (included Re-lighting)</h3>
             <div class="product-price" id="splatBoxPrice">
                 <span class="regular-price">$199</span>
                 <span>$99.50</span>
@@ -640,21 +644,24 @@
             </div>
             <p class="sale-deadline" id="splatBoxSaleDeadline">New Year sale ends December 31, 2026</p>
             <p class="product-desc">
-                A powerful Unity Editor plugin for editing and manipulating 3D Gaussian Splats 
-                directly within Unity. Intuitive tools for splat selection, transformation, 
-                and real-time preview. Now includes professional relighting system with dynamic lighting support.
+                "Photoshop for Splats" — a powerful Unity Editor plugin for editing, retouching,
+                streaming, and relighting 3D Gaussian Splats directly inside Unity. SplatBox v1.3
+                introduces a redesigned 3-column dark interface, 11 brush and editing tools,
+                Paged LoD streaming, VR Erase in Play Mode, and an included 17-page Best Practices PDF guide.
             </p>
             <ul class="feature-list">
-                <li>Visual splat selection & manipulation</li>
-                <li>Real-time preview in editor</li>
-                <li>Import/Export PLY and SPZ formats</li>
-                <li>Batch editing operations</li>
-                <li>Transform gizmos & precision tools</li>
-                <li>Real-time dynamic lighting (directional, point, spot, planar)</li>
-                <li>Shadow mapping & SSAO integration</li>
-                <li>Tilt-shift effects</li>
-                <li>Full demo scene included</li>
-                <li>Full source code included</li>
+                <li>Redesigned SplatBox v1.3 interface (Scene, Tool Settings & Workspace panels with 1–0 / G / S shortcuts)</li>
+                <li>11 editing tools: Erase, Geometry, Xcopy, Clone, Polygon Mask, Fill, Paint, Colorize, Stamp, Sculpt & Vortex</li>
+                <li>Paged LoD streaming with spatial page builder, live quality/budget controls & Quest FPS HUD sample</li>
+                <li>Xcopy & Clone — copy/paste splat volumes as movable objects (monolithic & Paged LoD) or clone patches</li>
+                <li>VR Erase Brush in Play Mode / Quest (controller trigger delete & thumbstick brush sizing)</li>
+                <li>Brush Color Filter, Color Threshold & Backface Culling for clean 3D retouching</li>
+                <li>Merge Splat Assets — combine multiple renderers with baked transforms & compression (~5× smaller)</li>
+                <li>Import/Export PLY & SPZ (Niantic/Scaniverse) with Spike Filtering & transform baking</li>
+                <li>Real-time dynamic lighting (directional, point, spot, planar) with Relight / Standard toggle</li>
+                <li>Shadow mapping, SSAO integration, Color Adjustments & Tilt-shift / camera blur effects</li>
+                <li>Includes 17-page SplatBox v1.3 Best Practices & "Photoshop for Splats" PDF Field Guide</li>
+                <li>Full demo scene & full source code included</li>
             </ul>
             <div style="background: #e8f4f8; border-left: 3px solid #2196F3; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Unity 6.5 Support:</strong> This Unity Editor Plugin supports Unity 6.5. Compatibility with other Unity versions may vary.
@@ -665,10 +672,10 @@
             <div style="background: #f0f0f0; border-left: 3px solid #666; padding: 1rem; margin: 1.5rem 0; font-size: 0.85rem;">
                 <strong>Full Source Code Included:</strong> The complete source code is included with your purchase.
             </div>
-            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'Splat Box Editor', getSplatBoxPrice())">
+            <button class="add-btn" id="addToCartBtn" onclick="addToCart('unity-gsplat-editor', 'SplatBox v1.3', getSplatBoxPrice())">
                 Add to Cart — $99.50
             </button>
-            <p class="product-meta">Unity 6.5 · URP (default render pipeline) · Full source code · Lifetime updates</p>
+            <p class="product-meta">SplatBox v1.3 · Unity 6.5 · URP (default render pipeline) · Full source code · Lifetime updates</p>
         </div>
     </section>
 
@@ -846,7 +853,7 @@
         const PRODUCT_IMAGES = {
             'worldlabs-api': 'Video/Worldlabs/promoImage.png',
             'vhs-vr-effects': '1980Promo.jpg',
-            'unity-gsplat-editor': 'Video/GSEditor/editor.png',
+            'unity-gsplat-editor': 'Video/GSEditor/splatbox-1.3-ui.png',
             'smart-decimation': 'Video/SmartDecimation/squarePromo.png?v=3',
             'mixamo-splat-rig': 'Video/MixamoSplatRig/squarePromo.png?v=4',
             'trip-api-unity-hdrp': null
